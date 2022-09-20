@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/WipeoutPackage/Scenes/MainMenu.unity
+    guid: f337f61126d3fb143ad36ddf3edec315
+  - enabled: 1
+    path: Assets/WipeoutPackage/Scenes/RaceScene.unity
+    guid: 75ccb3508d60c84429758d20c7eab496
   m_configObjects: {}

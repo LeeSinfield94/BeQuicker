@@ -21,6 +21,8 @@ namespace Launcher
         [SerializeField]
         private GameObject progressLabel;
 
+        bool isConnecting;
+
         void Awake()
         {
             PhotonNetwork.AutomaticallySyncScene = true;
@@ -40,14 +42,19 @@ namespace Launcher
             }
             else
             {
-                PhotonNetwork.ConnectUsingSettings();
+                isConnecting = PhotonNetwork.ConnectUsingSettings();
                 PhotonNetwork.GameVersion = gameVersion;
             }
         }
         public override void OnConnectedToMaster()
         {
             Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
-            PhotonNetwork.JoinRandomRoom();
+            if (isConnecting)
+            {
+                // #Critical: The first we try to do is to join a potential existing room. If there is, good, else, we'll be called back with OnJoinRandomFailed()
+                PhotonNetwork.JoinRandomRoom();
+                isConnecting = false;
+            }
         }
 
 
@@ -67,6 +74,15 @@ namespace Launcher
         }
         public override void OnJoinedRoom()
         {
+            if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
+            {
+                Debug.Log("We load the 'Room for 1' ");
+
+
+                // #Critical
+                // Load the Room Level.
+                PhotonNetwork.LoadLevel("RaceScene");
+            }
             Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
         }
     }

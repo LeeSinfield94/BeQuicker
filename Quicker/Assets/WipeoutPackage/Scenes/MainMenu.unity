@@ -123,6 +123,16 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &155903739 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8713445271516932789, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
+  m_PrefabInstance: {fileID: 4732379137592470363}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &218033866 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2391089474584918014, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
+  m_PrefabInstance: {fileID: 4732379137592470363}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &572365869
 GameObject:
   m_ObjectHideFlags: 0
@@ -410,8 +420,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxPlayersPerRoom: 4
-  controlPanel: {fileID: 0}
-  progressLabel: {fileID: 0}
+  controlPanel: {fileID: 218033866}
+  progressLabel: {fileID: 155903739}
 --- !u!4 &1006516543
 Transform:
   m_ObjectHideFlags: 0
@@ -478,6 +488,10 @@ PrefabInstance:
     - target: {fileID: 3499213090246724198, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 174
+      objectReference: {fileID: 0}
+    - target: {fileID: 4502575103292824016, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4559564632249230383, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
       propertyPath: m_HorizontalAlignment
@@ -618,6 +632,10 @@ PrefabInstance:
     - target: {fileID: 5786306801949928531, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -64.79901
+      objectReference: {fileID: 0}
+    - target: {fileID: 7400568028357126058, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8294666275792690294, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
       propertyPath: m_RaycastTarget

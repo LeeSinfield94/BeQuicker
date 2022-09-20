@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerFloor : MonoBehaviour
 {
     [SerializeField] private ObstacleType obstacleType;
-    private Player myPlayer;
+    private PlayerData myPlayer;
     
     public void SpawnObstacleOnFloor(ObstacleType type)
     {

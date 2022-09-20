@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpikeObstacle : BaseObstacle
 {
-    protected override void DoEffect(Player player)
+    protected override void DoEffect(PlayerData player)
     {
         if(player != null)
         {
@@ -12,7 +12,7 @@ public class SpikeObstacle : BaseObstacle
         }
     }
 
-    protected override void UndoEffect(Player player)
+    protected override void UndoEffect(PlayerData player)
     {
         if (player != null)
         {
