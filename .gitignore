@@ -75,8 +75,3 @@ Quicker/Temp/UnityLockfile
 Quicker/Library/ArtifactDB
 Quicker/Library/SceneVisibilityState.asset
 Quicker/Library/SourceAssetDB
-.gitignore
-Quicker/Logs/shadercompiler-UnityShaderCompiler.exe0.log
-.gitignore
-Quicker/Logs/shadercompiler-UnityShaderCompiler.exe1.log
-Quicker/Logs/shadercompiler-UnityShaderCompiler.exe2.log
