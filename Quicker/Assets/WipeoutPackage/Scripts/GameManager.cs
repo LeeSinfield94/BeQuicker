@@ -16,8 +16,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     //list of players and their ready status.   
     public static Dictionary<PlayerData, bool> playersReady = new Dictionary<PlayerData, bool>();
-    #region Photon Callbacks
-
 
     /// <summary>
     /// Called when the local player left the room. We need to load the launcher scene.
@@ -27,22 +25,10 @@ public class GameManager : MonoBehaviourPunCallbacks
         SceneManager.LoadScene(0);
     }
 
-
-    #endregion
-
-
-    #region Public Methods
-
-
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
     }
-
-
-    #endregion
-    #region Private Methods
-
 
     void LoadArena()
     {
@@ -54,10 +40,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
 
-    #endregion
-    #region Photon Callbacks
-
-
     public override void OnPlayerEnteredRoom(Player other)
     {
         if (PhotonNetwork.IsMasterClient)
@@ -66,7 +48,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-
     public override void OnPlayerLeftRoom(Player other)
     {
         if (PhotonNetwork.IsMasterClient)
@@ -74,7 +55,6 @@ public class GameManager : MonoBehaviourPunCallbacks
             LoadArena();
         }
     }
-    #endregion
 
     public static void SetPlayerTime(PlayerData player)
     {
