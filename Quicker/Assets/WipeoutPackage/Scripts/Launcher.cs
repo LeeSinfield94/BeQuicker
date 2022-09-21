@@ -70,7 +70,7 @@ namespace Launcher
         }
         public override void OnJoinedRoom()
         {
-            PhotonNetwork.LoadLevel("RaceScene")
+            PhotonNetwork.LoadLevel("RaceScene");
         }
     }
 

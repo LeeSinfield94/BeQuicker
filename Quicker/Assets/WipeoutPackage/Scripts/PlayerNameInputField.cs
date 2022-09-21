@@ -38,7 +38,7 @@ namespace MyGame.UI
 
 
             string defaultName = string.Empty;
-            InputField _inputField = this.GetComponent<InputField>();
+            TMP_InputField _inputField = this.GetComponent<TMP_InputField>();
             if (_inputField != null)
             {
                 if (PlayerPrefs.HasKey(playerNamePrefKey))
