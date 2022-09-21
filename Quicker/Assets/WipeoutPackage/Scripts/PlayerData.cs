@@ -1,9 +1,11 @@
+using MyGame.Gameplay;
 using UnityEngine;
 public class PlayerData : MonoBehaviour
 {
     [SerializeField] private float startSpeed;
     [SerializeField] private PlayerFloor myFloor;
     [SerializeField] private PlayerFloor opponentsFloor;
+    [SerializeField] private PlayerAnimatorManager playerAnimator;
     public PlayerFloor MyFloor
     {
         set 
@@ -29,10 +31,6 @@ public class PlayerData : MonoBehaviour
 
     private Vector3 currentForward;
 
-    private void Awake()
-    {
-
-    }
 
     public void SetSpeed(bool isSlow)
     {
@@ -45,14 +43,21 @@ public class PlayerData : MonoBehaviour
     }
     private void Update()
     {
+       
         //Player should not start moving until all other players are ready.
         if (GameManager.AllPlayersReady)
         {
-            currentForward += Vector3.forward;
+            startSpeed = 1;
         }
         else
         {
-            currentForward = new Vector3(0, 0, 0);
+            startSpeed = 0;
+        }
+
+        if (playerAnimator != null)
+        {
+            playerAnimator.SetAnimation(startSpeed);
+
         }
     }
 

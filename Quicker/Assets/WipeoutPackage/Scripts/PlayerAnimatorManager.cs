@@ -2,17 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimatorManager : MonoBehaviour
+namespace MyGame.Gameplay
 {
-    // Start is called before the first frame update
-    void Start()
+    [RequireComponent(typeof(Animator))]
+    public class PlayerAnimatorManager : MonoBehaviour
     {
-        
-    }
+        private Animator animator;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        private void Start()
+        {
+            animator = GetComponent<Animator>();
+        }
+
+        public void SetAnimation(float speed)
+        {
+            
+            animator.SetFloat("Speed", speed);
+        }
+    } 
 }
