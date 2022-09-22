@@ -15,7 +15,7 @@ namespace MyGame.Gameplay
             animator = GetComponent<Animator>();
         }
 
-        public void SetAnimation(float speed)
+        public void SetAnimationSpeed(float speed)
         {
             if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
             {

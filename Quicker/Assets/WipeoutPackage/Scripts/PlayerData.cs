@@ -1,28 +1,13 @@
 using MyGame.Gameplay;
 using Photon.Pun;
 using UnityEngine;
-public class PlayerData : MonoBehaviourPun
+public class PlayerData : MonoBehaviourPun, IPunObservable
 {
-    [SerializeField] private float startSpeed;
-    [SerializeField] private PlayerFloor myFloor;
-    [SerializeField] private PlayerFloor opponentsFloor;
+    [SerializeField] private float speed;
     [SerializeField] private PlayerAnimatorManager playerAnimator;
-    public PlayerFloor MyFloor
-    {
-        set 
-        { 
-            myFloor = value;
-        }
-    }
-    public PlayerFloor OpponentsFloor
-    {
-        set
-        {
-            opponentsFloor = value;
-        }
-    }
-    private float slowSpeed = 2;
-
+    private float slowSpeed = 0.1f;
+    private float normalSpeed = 1;
+    private bool isSlowed;
 
     private bool canMoveForward = true;
     public bool CanMoveForward
@@ -34,52 +19,67 @@ public class PlayerData : MonoBehaviourPun
 
     private void Start()
     {
-        if(photonView.IsMine && PhotonNetwork.IsConnected)
+        if (photonView.IsMine && PhotonNetwork.IsConnected)
         {
             CameraFollow.instance.Init(this.transform);
         }
     }
-    public void SetSpeed(bool isSlow)
-    {
 
+    public void SetSlowed(bool isSlow)
+    {
+        isSlowed = isSlow;
+        SetSpeed();
     }
 
+    public void SetSpeed()
+    {
+        speed = isSlowed ? slowSpeed : normalSpeed;
+        SetAnimaionSpeed();
+    }
     public void SetReadyUpStatus(bool readyStatus)
     {
         GameManager.SetPlayerReadyStatus(this, readyStatus);
     }
+
     private void Update()
     {
        
         //Player should not start moving until all other players are ready.
         if (GameManager.AllPlayersReady)
         {
-            startSpeed = 1;
+            SetSpeed();
         }
         else
         {
-            startSpeed = 0;
+            speed = 0;
         }
+        print(isSlowed);
+        SetAnimaionSpeed();
+    }
 
+    public void SetAnimaionSpeed()
+    {
         if (playerAnimator != null)
         {
-            playerAnimator.SetAnimation(startSpeed);
-
+            playerAnimator.SetAnimationSpeed(speed);
         }
     }
-
-    public void SpawnSpikeForOtherPlayer()
-    {
-        opponentsFloor.SpawnObstacleOnFloor(ObstacleType.SPIKE);
-    }
-
-    public void SpawnSlowForOtherPlayer()
-    {
-        opponentsFloor.SpawnObstacleOnFloor(ObstacleType.SLOW);
-    }
-
     public void SetMyTime()
     {
         GameManager.SetPlayerTime(this);
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // We own this player: send the others our data
+            stream.SendNext(isSlowed);
+        }
+        else
+        {
+            // Network player, receive data
+            this.isSlowed = (bool)stream.ReceiveNext();
+        }
     }
 }

@@ -13,10 +13,26 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         get { return allPlayersReady; }
     }
+    [Tooltip("The prefab to use for representing the player")]
+    public GameObject playerPrefab;
 
+    public Transform spawnPoint;
     //list of players and their ready status.   
     public static Dictionary<PlayerData, bool> playersReady = new Dictionary<PlayerData, bool>();
 
+    private void Start()
+    {
+        if (playerPrefab == null)
+        {
+            Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
+        }
+        else
+        {
+            Debug.LogFormat("We are Instantiating LocalPlayer from {0}", Application.loadedLevelName);
+            // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
+            PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPoint.position, Quaternion.identity, 0);
+        }
+    }
     /// <summary>
     /// Called when the local player left the room. We need to load the launcher scene.
     /// </summary>

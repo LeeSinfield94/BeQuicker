@@ -6,9 +6,10 @@ public class SlowObstacle : BaseObstacle
 {
     protected override void DoEffect(PlayerData player)
     {
+        print("SlowEffect");
         if (player != null)
         {
-            player.SetSpeed(true);
+            player.SetSlowed(true);
         }
     }
 
@@ -16,7 +17,7 @@ public class SlowObstacle : BaseObstacle
     {
         if (player != null)
         {
-            player.SetSpeed(false);
+            player.SetSlowed(false);
         }
     }
 }
