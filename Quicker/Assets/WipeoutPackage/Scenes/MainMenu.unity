@@ -388,8 +388,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6f49322e62b5574096a83ee1d7c004e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetToFollow: {fileID: 0}
-  offset: {x: 0, y: 15, z: -5}
+  offset: {x: 0, y: 4, z: -4}
 --- !u!1 &1006516541
 GameObject:
   m_ObjectHideFlags: 0

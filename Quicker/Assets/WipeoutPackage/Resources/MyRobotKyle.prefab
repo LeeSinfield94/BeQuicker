@@ -631,7 +631,7 @@ Transform:
   m_Children:
   - {fileID: 1660451163778978783}
   - {fileID: 1660451163778978777}
-  - {fileID: 2397490783264711509}
+  - {fileID: 3168548471636365163}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -671,7 +671,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 1.05, z: 0}
 --- !u!114 &2179521496871350845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -733,6 +733,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
+  - {fileID: 2179521496871350845}
   - {fileID: 5677371434969296316}
   - {fileID: 76809192402799563}
   sceneViewId: 0
@@ -1822,7 +1823,7 @@ Transform:
   m_Father: {fileID: 1660451163778978717}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &7775718594935311567
+--- !u!1001 &7013668105842778353
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1833,14 +1834,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 2179521496871350845}
-    - target: {fileID: 4336914006818410872, guid: eaaad87c836b2264c815670573f43025, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: PlayerData, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 5381097828804853113, guid: eaaad87c836b2264c815670573f43025, type: 3}
-      propertyPath: m_RaycastTarget
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5381097830427455386, guid: eaaad87c836b2264c815670573f43025, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1931,8 +1924,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eaaad87c836b2264c815670573f43025, type: 3}
---- !u!224 &2397490783264711509 stripped
+--- !u!224 &3168548471636365163 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5381097830427455386, guid: eaaad87c836b2264c815670573f43025, type: 3}
-  m_PrefabInstance: {fileID: 7775718594935311567}
+  m_PrefabInstance: {fileID: 7013668105842778353}
   m_PrefabAsset: {fileID: 0}
