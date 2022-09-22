@@ -1,6 +1,7 @@
 using MyGame.Gameplay;
+using Photon.Pun;
 using UnityEngine;
-public class PlayerData : MonoBehaviour
+public class PlayerData : MonoBehaviourPun
 {
     [SerializeField] private float startSpeed;
     [SerializeField] private PlayerFloor myFloor;
@@ -31,7 +32,13 @@ public class PlayerData : MonoBehaviour
 
     private Vector3 currentForward;
 
-
+    private void Start()
+    {
+        if(photonView.IsMine && PhotonNetwork.IsConnected)
+        {
+            CameraFollow.instance.Init(this.transform);
+        }
+    }
     public void SetSpeed(bool isSlow)
     {
 

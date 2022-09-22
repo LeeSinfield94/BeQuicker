@@ -4,8 +4,17 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private Transform targetToFollow;
     [SerializeField] private Vector3 offset;
+
+
+    private Transform targetToFollow;
+
+    public static CameraFollow instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
     // Start is called before the first frame update
     public void Init(Transform followTarget)
     {

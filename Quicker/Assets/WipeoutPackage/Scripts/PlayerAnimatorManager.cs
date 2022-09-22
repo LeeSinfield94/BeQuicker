@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 namespace MyGame.Gameplay
 {
     [RequireComponent(typeof(Animator))]
-    public class PlayerAnimatorManager : MonoBehaviour
+    public class PlayerAnimatorManager : MonoBehaviourPun
     {
         private Animator animator;
 
@@ -16,7 +17,10 @@ namespace MyGame.Gameplay
 
         public void SetAnimation(float speed)
         {
-            
+            if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
+            {
+                return;
+            }
             animator.SetFloat("Speed", speed);
         }
     } 
