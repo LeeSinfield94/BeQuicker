@@ -8,7 +8,6 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
     private float slowSpeed = 0.1f;
     private float normalSpeed = 1;
     private bool isSlowed;
-
     private bool canMoveForward = true;
     public bool CanMoveForward
     {
@@ -17,6 +16,16 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
 
     private Vector3 currentForward;
 
+    public static GameObject LocalPlayerInstance;
+    private void Awake()
+    {
+        if (photonView.IsMine)
+        {
+            PlayerData.LocalPlayerInstance = this.gameObject;
+        }
+
+        DontDestroyOnLoad(this.gameObject);
+    }
     private void Start()
     {
         if (photonView.IsMine && PhotonNetwork.IsConnected)

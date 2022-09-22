@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private static Dictionary<PlayerData, float> playerTime = new Dictionary<PlayerData, float>();
     [SerializeField] private GameObject playerPrefab;
-    [SerializeField] private Transform spawnPoint;
+    [SerializeField] private List<Transform> spawnPoints = new List<Transform>();
 
 
     private static bool allPlayersReady = false;
@@ -23,14 +23,16 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        if (playerPrefab == null)
+        if (PlayerData.LocalPlayerInstance == null)
         {
-            Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
+            Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
+            // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
+            PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPoints[0].transform.position, Quaternion.identity, 0);
+            spawnPoints.Remove(spawnPoints[0]);
         }
         else
         {
-            Debug.LogFormat("We are Instantiating LocalPlayer from {0}", Application.loadedLevelName);
-            PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPoint.position, Quaternion.identity, 0);
+            Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
         }
     }
     /// <summary>

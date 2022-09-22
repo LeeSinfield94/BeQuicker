@@ -13,7 +13,7 @@ namespace Launcher
 
         [Tooltip("The maximum number of players per room. When a room is full, it can't be joined by new players, and so new room will be created")]
         [SerializeField]
-        private byte maxPlayersPerRoom = 4;
+        private byte maxPlayersPerRoom = 1;
         [Tooltip("The Ui Panel to let the user enter name, connect and play")]
         [SerializeField]
         private GameObject controlPanel;
@@ -66,6 +66,7 @@ namespace Launcher
 
         public override void OnJoinRandomFailed(short returnCode, string message)
         {
+            Debug.LogWarningFormat("OnDisconnected() was called by PUN with reason {0}", message);
             PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
         }
         public override void OnJoinedRoom()
