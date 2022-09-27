@@ -74,8 +74,6 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
 
     private void Update()
     {
-
-        Debug.Log($"Spawn Point 0 Pos = {gameObject.transform.position}");
         //Player should not start moving until all other players are ready.
         if (GameManager.AllPlayersReady)
         {

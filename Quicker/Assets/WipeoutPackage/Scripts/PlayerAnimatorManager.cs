@@ -21,7 +21,8 @@ namespace MyGame.Gameplay
             {
                 return;
             }
-            animator.SetFloat("Speed", speed);
+            if(animator)
+                animator.SetFloat("Speed", speed);
         }
     } 
 }
