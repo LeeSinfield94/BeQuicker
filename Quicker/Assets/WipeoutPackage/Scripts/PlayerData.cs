@@ -1,5 +1,6 @@
 using MyGame.Gameplay;
 using Photon.Pun;
+using System.Collections;
 using UnityEngine;
 public class PlayerData : MonoBehaviourPun, IPunObservable
 {
@@ -26,13 +27,34 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
 
         DontDestroyOnLoad(this.gameObject);
     }
+    
     private void Start()
     {
         if (photonView.IsMine && PhotonNetwork.IsConnected)
         {
             CameraFollow.instance.Init(this.transform);
         }
+        StartCoroutine(WaitForOneSecond());
     }
+    public IEnumerator WaitForOneSecond()
+    {
+        yield return new WaitForSeconds(2);
+        if (photonView.IsMine)
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                Debug.Log($"Player Pos = {gameObject.transform.position}");
+                gameObject.transform.position = GameManager.instance.spawnPoints[0].transform.position;
+                Debug.Log($"Spawn Point 0 Pos = {gameObject.transform.position}");
+            }
+            else
+            {
+                transform.position = GameManager.instance.spawnPoints[1].transform.position;
+                Debug.Log($"Spawn Point 1 Pos = {GameManager.instance.spawnPoints[1].transform.position}");
+            }
+        }
+    }
+
 
     public void SetSlowed(bool isSlow)
     {
@@ -52,7 +74,8 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
 
     private void Update()
     {
-       
+
+        Debug.Log($"Spawn Point 0 Pos = {gameObject.transform.position}");
         //Player should not start moving until all other players are ready.
         if (GameManager.AllPlayersReady)
         {
@@ -62,7 +85,6 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
         {
             speed = 0;
         }
-        print(isSlowed);
         SetAnimaionSpeed();
     }
 

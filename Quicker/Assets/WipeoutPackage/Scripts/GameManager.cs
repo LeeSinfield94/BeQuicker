@@ -9,7 +9,9 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private static Dictionary<PlayerData, float> playerTime = new Dictionary<PlayerData, float>();
     [SerializeField] private GameObject playerPrefab;
-    [SerializeField] private List<Transform> spawnPoints = new List<Transform>();
+    [SerializeField] private GameObject floorPrefab;
+    public List<Transform> spawnPoints = new List<Transform>();
+    private SpawnPoint currentSpawnPoint;
 
 
     private static bool allPlayersReady = false;
@@ -20,21 +22,36 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     //list of players and their ready status.   
     public static Dictionary<PlayerData, bool> playersReady = new Dictionary<PlayerData, bool>();
+    public static GameManager instance;
 
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(instance);
+            instance = this;
+        }
+        else
+        {
+            instance = this;
+        }
+    }
     private void Start()
     {
         if (PlayerData.LocalPlayerInstance == null)
         {
             Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
             // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-            PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPoints[0].transform.position, Quaternion.identity, 0);
-            spawnPoints.Remove(spawnPoints[0]);
+            PhotonNetwork.Instantiate(this.playerPrefab.name, Vector3.zero, Quaternion.identity, 0);
+          
         }
         else
         {
             Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
         }
     }
+
+
     /// <summary>
     /// Called when the local player left the room. We need to load the launcher scene.
     /// </summary>
@@ -54,7 +71,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             Debug.LogError("PhotonNetwork : Trying to Load a level but we are not the master Client");
         }
-        PhotonNetwork.LoadLevel("Room for " + PhotonNetwork.CurrentRoom.PlayerCount);
     }
 
 
