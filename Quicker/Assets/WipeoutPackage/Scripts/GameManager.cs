@@ -1,3 +1,4 @@
+using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
@@ -10,14 +11,14 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] private static Dictionary<PlayerData, float> playerTime = new Dictionary<PlayerData, float>();
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject floorPrefab;
-    public List<Transform> spawnPoints = new List<Transform>();
-    private SpawnPoint currentSpawnPoint;
+    [SerializeField] private List<Transform> spawnPoints = new List<Transform>();
 
-
+    private static byte SetPlayerIsReady = 1;
     private static bool allPlayersReady = false;
     public static bool AllPlayersReady
     {
         get { return allPlayersReady; }
+        set { allPlayersReady = value; }
     }
 
     //list of players and their ready status.   
@@ -42,8 +43,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
             // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-            PhotonNetwork.Instantiate(this.playerPrefab.name, Vector3.zero, Quaternion.identity, 0);
-            
+            PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber - 1].transform.position, Quaternion.identity, 0);
         }
         else
         {
@@ -100,12 +100,19 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public static void SetPlayerReadyStatus(PlayerData player, bool isReady)
     {
-        if(playersReady.ContainsKey(player))
+        if (playersReady.ContainsKey(player))
         {
             playersReady[player] = isReady;
         }
+        
         CheckAllPlayersAreReady();
     }
+    private static void UpdatePlayersReady()
+    {
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+        PhotonNetwork.RaiseEvent(SetPlayerIsReady, GameManager.AllPlayersReady, raiseEventOptions, SendOptions.SendReliable);
+    }
+   
 
     public static void CheckAllPlayersAreReady()
     {
@@ -114,10 +121,12 @@ public class GameManager : MonoBehaviourPunCallbacks
             if(player.Value == false)
             {
                allPlayersReady = false;
+               UpdatePlayersReady();
                return;
             }
         }
         allPlayersReady = true;
+        UpdatePlayersReady();
         StartTimer();
     }
 
@@ -131,5 +140,15 @@ public class GameManager : MonoBehaviourPunCallbacks
         float time;
         playerTime.TryGetValue(player, out time);
         return time;
+    }
+
+    public void OnEvent(EventData photonEvent)
+    {
+        allPlayersReady = (bool)photonEvent.CustomData;
+        Debug.Log($"All Players Ready = {allPlayersReady}");
+        if(allPlayersReady)
+        {
+            StartTimer();
+        }
     }
 }

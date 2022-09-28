@@ -23,6 +23,7 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
         if (photonView.IsMine)
         {
             PlayerData.LocalPlayerInstance = this.gameObject;
+            GameManager.playersReady.Add(this, false);
         }
 
         DontDestroyOnLoad(this.gameObject);
@@ -34,26 +35,8 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
         {
             CameraFollow.instance.Init(this.transform);
         }
-        StartCoroutine(WaitForOneSecond());
     }
-    public IEnumerator WaitForOneSecond()
-    {
-        yield return new WaitForSeconds(2);
-        if (photonView.IsMine)
-        {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                Debug.Log($"Player Pos = {gameObject.transform.position}");
-                gameObject.transform.position = GameManager.instance.spawnPoints[0].transform.position;
-                Debug.Log($"Spawn Point 0 Pos = {gameObject.transform.position}");
-            }
-            else
-            {
-                transform.position = GameManager.instance.spawnPoints[1].transform.position;
-                Debug.Log($"Spawn Point 1 Pos = {GameManager.instance.spawnPoints[1].transform.position}");
-            }
-        }
-    }
+  
 
 
     public void SetSlowed(bool isSlow)
