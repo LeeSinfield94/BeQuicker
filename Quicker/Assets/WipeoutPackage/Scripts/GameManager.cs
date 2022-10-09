@@ -65,29 +65,15 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LeaveRoom();
     }
 
-    void LoadArena()
-    {
-        if (!PhotonNetwork.IsMasterClient)
-        {
-            Debug.LogError("PhotonNetwork : Trying to Load a level but we are not the master Client");
-        }
-    }
-
 
     public override void OnPlayerEnteredRoom(Player other)
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            LoadArena();
-        }
+
     }
 
     public override void OnPlayerLeftRoom(Player other)
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            LoadArena();
-        }
+
     }
 
     public static void SetPlayerTime(PlayerData player)
@@ -107,11 +93,12 @@ public class GameManager : MonoBehaviourPunCallbacks
         
         CheckAllPlayersAreReady();
     }
-    private static void UpdatePlayersReady()
-    {
-        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-        PhotonNetwork.RaiseEvent(SetPlayerIsReady, GameManager.AllPlayersReady, raiseEventOptions, SendOptions.SendReliable);
-    }
+
+    //private static void UpdatePlayersReady()
+    //{
+    //    RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+    //    PhotonNetwork.RaiseEvent(SetPlayerIsReady, GameManager.AllPlayersReady, raiseEventOptions, SendOptions.SendReliable);
+    //}
    
 
     public static void CheckAllPlayersAreReady()
@@ -121,12 +108,12 @@ public class GameManager : MonoBehaviourPunCallbacks
             if(player.Value == false)
             {
                allPlayersReady = false;
-               UpdatePlayersReady();
+               //UpdatePlayersReady();
                return;
             }
         }
         allPlayersReady = true;
-        UpdatePlayersReady();
+        //UpdatePlayersReady();
         StartTimer();
     }
 
@@ -141,14 +128,23 @@ public class GameManager : MonoBehaviourPunCallbacks
         playerTime.TryGetValue(player, out time);
         return time;
     }
-
-    public void OnEvent(EventData photonEvent)
+    private void OnEnable()
     {
-        allPlayersReady = (bool)photonEvent.CustomData;
-        Debug.Log($"All Players Ready = {allPlayersReady}");
-        if(allPlayersReady)
-        {
-            StartTimer();
-        }
+        PhotonNetwork.AddCallbackTarget(this);
     }
+
+    private void OnDisable()
+    {
+        PhotonNetwork.RemoveCallbackTarget(this);
+    }
+
+    //public void OnEvent(EventData photonEvent)
+    //{
+    //    allPlayersReady = (bool)photonEvent.CustomData;
+    //    Debug.Log($"All Players Ready = {allPlayersReady}");
+    //    if (allPlayersReady)
+    //    {
+    //        StartTimer();
+    //    }
+    //}
 }

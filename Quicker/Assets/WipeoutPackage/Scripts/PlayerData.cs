@@ -14,7 +14,7 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
     {
         set { canMoveForward = value; }
     }
-
+    public bool isReady;
     private Vector3 currentForward;
 
     public static GameObject LocalPlayerInstance;
@@ -52,7 +52,8 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
     }
     public void SetReadyUpStatus(bool readyStatus)
     {
-        GameManager.SetPlayerReadyStatus(this, readyStatus);
+        isReady = readyStatus;
+        GameManager.SetPlayerReadyStatus(this, isReady);
     }
 
     private void Update()
@@ -87,11 +88,16 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
         {
             // We own this player: send the others our data
             stream.SendNext(isSlowed);
+            stream.SendNext(isReady);
         }
         else
         {
             // Network player, receive data
             this.isSlowed = (bool)stream.ReceiveNext();
+            this.isReady = (bool)stream.ReceiveNext();
         }
+
+        if(!photonView.IsMine)
+            GameManager.SetPlayerReadyStatus(this, isReady);
     }
 }

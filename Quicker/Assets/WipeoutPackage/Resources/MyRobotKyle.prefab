@@ -686,6 +686,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0
   playerAnimator: {fileID: 4146775068623485882}
+  isReady: 0
 --- !u!114 &4146775068623485882
 MonoBehaviour:
   m_ObjectHideFlags: 0
