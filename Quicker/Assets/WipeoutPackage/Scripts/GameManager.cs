@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject floorPrefab;
     [SerializeField] private List<Transform> spawnPoints = new List<Transform>();
 
-    private static byte SetPlayerIsReady = 1;
     private static bool allPlayersReady = false;
     public static bool AllPlayersReady
     {

@@ -55,7 +55,6 @@ GameObject:
   - component: {fileID: 8174610386989453385}
   - component: {fileID: 8174610386989453384}
   - component: {fileID: 8174610386989453383}
-  - component: {fileID: 1013781691818201858}
   - component: {fileID: 6028243303019985531}
   m_Layer: 0
   m_Name: PlayerFloor
@@ -145,30 +144,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1013781691818201858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8174610386989453382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObjectInterest: 0
-  DefaultInterestGroups: []
-  DestroyWhenStateAuthorityLeaves: 0
-  AllowStateAuthorityOverride: 1
-  AoiPositionSource: {fileID: 0}
-  Flags: 2305
-  NetworkGuid:
-    RawGuidValue: 8230907d4338e174bb288e1f9c86d38d
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 6028243303019985531}
-  SimulationBehaviours: []
 --- !u!114 &6028243303019985531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,10 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a601053d463a22e4aa8b03cc3c932d4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
-  obstacleType:
-    spikeObstacle: {fileID: 8821130895318198195, guid: 9adae4f7a93bd1d4cb9f3689057f8414, type: 3}
-    slowObstacle: {fileID: 6670837148533122407, guid: b135efe1cf05a3f40b3c6998f4746ef4, type: 3}
+  obstacleType: 0
 --- !u!1001 &2730903058789913730
 PrefabInstance:
   m_ObjectHideFlags: 0

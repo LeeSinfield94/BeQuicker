@@ -1,8 +1,10 @@
+using ExitGames.Client.Photon;
 using MyGame.Gameplay;
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using UnityEngine;
-public class PlayerData : MonoBehaviourPun, IPunObservable
+public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
 {
     [SerializeField] private float speed;
     [SerializeField] private PlayerAnimatorManager playerAnimator;
@@ -16,7 +18,17 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
     {
         set { canMoveForward = value; }
     }
+    [SerializeField]
+    private PlayerFloor myFloor;
+    public PlayerFloor MyFloor
+    {
+        set { myFloor = value; }
+        get { return myFloor; }
+    }
     public bool isReady;
+
+    public const byte spawnSpikeEvent = 1;
+    public const byte spawnSlowEvent = 2;
 
     public static GameObject LocalPlayerInstance;
     private void Awake()
@@ -33,6 +45,7 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
         if (photonView.IsMine && PhotonNetwork.IsConnected)
         {
             CameraFollow.instance.Init(this.transform);
+            NetworkedEvents.instance.localPlayer = this;
         }
         if(!photonView.IsMine)
         {
@@ -80,6 +93,20 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
             playerAnimator.SetAnimationSpeed(speed);
         }
     }
+
+    public void RaiseSlowEvent()
+    {
+        byte obstacleType = (byte)ObstacleType.SLOW;
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        PhotonNetwork.RaiseEvent(spawnSlowEvent, obstacleType, raiseEventOptions, SendOptions.SendReliable);
+    }
+
+    public void RaiseSpikeEvent()
+    {
+        byte obstacleType = (byte)ObstacleType.SPIKE;
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        PhotonNetwork.RaiseEvent(spawnSpikeEvent, obstacleType, raiseEventOptions, SendOptions.SendReliable);
+    }
     public void SetMyTime()
     {
         GameManager.SetPlayerTime(this);
@@ -103,4 +130,5 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
         if(!photonView.IsMine)
             GameManager.SetPlayerReadyStatus(photonView.ViewID, this.isReady);
     }
+
 }
