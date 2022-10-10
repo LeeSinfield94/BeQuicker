@@ -22,14 +22,14 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     //list of players and their ready status.   
-    public static Dictionary<PlayerData, bool> playersReady = new Dictionary<PlayerData, bool>();
+    public static Dictionary<int, bool> playersReady = new Dictionary<int, bool>();
     public static GameManager instance;
 
     private void Awake()
     {
         if (instance != null)
         {
-            Destroy(instance);
+            Destroy(instance.gameObject);
             instance = this;
         }
         else
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
             // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-            PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber - 1].transform.position, Quaternion.identity, 0);
+            GameObject go = PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber - 1].transform.position, Quaternion.identity, 0);
         }
         else
         {
@@ -84,36 +84,29 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public static void SetPlayerReadyStatus(PlayerData player, bool isReady)
+    public static void SetPlayerReadyStatus(int viewID, bool isReady)
     {
-        if (playersReady.ContainsKey(player))
+        if (playersReady.ContainsKey(viewID))
         {
-            playersReady[player] = isReady;
+            playersReady[viewID] = isReady;
         }
         
         CheckAllPlayersAreReady();
     }
 
-    //private static void UpdatePlayersReady()
-    //{
-    //    RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-    //    PhotonNetwork.RaiseEvent(SetPlayerIsReady, GameManager.AllPlayersReady, raiseEventOptions, SendOptions.SendReliable);
-    //}
    
 
     public static void CheckAllPlayersAreReady()
     {
-        foreach(KeyValuePair<PlayerData, bool> player in playersReady)
+        foreach(KeyValuePair<int, bool> player in playersReady)
         {
             if(player.Value == false)
             {
                allPlayersReady = false;
-               //UpdatePlayersReady();
                return;
             }
         }
         allPlayersReady = true;
-        //UpdatePlayersReady();
         StartTimer();
     }
 
@@ -128,23 +121,5 @@ public class GameManager : MonoBehaviourPunCallbacks
         playerTime.TryGetValue(player, out time);
         return time;
     }
-    private void OnEnable()
-    {
-        PhotonNetwork.AddCallbackTarget(this);
-    }
 
-    private void OnDisable()
-    {
-        PhotonNetwork.RemoveCallbackTarget(this);
-    }
-
-    //public void OnEvent(EventData photonEvent)
-    //{
-    //    allPlayersReady = (bool)photonEvent.CustomData;
-    //    Debug.Log($"All Players Ready = {allPlayersReady}");
-    //    if (allPlayersReady)
-    //    {
-    //        StartTimer();
-    //    }
-    //}
 }

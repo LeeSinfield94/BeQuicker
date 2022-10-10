@@ -686,6 +686,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0
   playerAnimator: {fileID: 4146775068623485882}
+  playerHUd: {fileID: 1502183134654046641}
   isReady: 0
 --- !u!114 &4146775068623485882
 MonoBehaviour:
@@ -1925,6 +1926,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eaaad87c836b2264c815670573f43025, type: 3}
+--- !u!1 &1502183134654046641 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5381097830427455399, guid: eaaad87c836b2264c815670573f43025, type: 3}
+  m_PrefabInstance: {fileID: 6806535997281783318}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1502183134654046604 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5381097830427455386, guid: eaaad87c836b2264c815670573f43025, type: 3}

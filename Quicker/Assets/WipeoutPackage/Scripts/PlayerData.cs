@@ -6,6 +6,8 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] private float speed;
     [SerializeField] private PlayerAnimatorManager playerAnimator;
+    [SerializeField] private GameObject playerHUd;
+
     private float slowSpeed = 0.1f;
     private float normalSpeed = 1;
     private bool isSlowed;
@@ -15,7 +17,6 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
         set { canMoveForward = value; }
     }
     public bool isReady;
-    private Vector3 currentForward;
 
     public static GameObject LocalPlayerInstance;
     private void Awake()
@@ -23,10 +24,8 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
         if (photonView.IsMine)
         {
             PlayerData.LocalPlayerInstance = this.gameObject;
-            GameManager.playersReady.Add(this, false);
         }
-
-        DontDestroyOnLoad(this.gameObject);
+        GameManager.playersReady.Add(photonView.ViewID, isReady);
     }
     
     private void Start()
@@ -34,6 +33,10 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
         if (photonView.IsMine && PhotonNetwork.IsConnected)
         {
             CameraFollow.instance.Init(this.transform);
+        }
+        if(!photonView.IsMine)
+        {
+            playerHUd.SetActive(false);
         }
     }
   
@@ -53,7 +56,7 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
     public void SetReadyUpStatus(bool readyStatus)
     {
         isReady = readyStatus;
-        GameManager.SetPlayerReadyStatus(this, isReady);
+        GameManager.SetPlayerReadyStatus(photonView.ViewID, isReady);
     }
 
     private void Update()
@@ -98,6 +101,6 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
         }
 
         if(!photonView.IsMine)
-            GameManager.SetPlayerReadyStatus(this, isReady);
+            GameManager.SetPlayerReadyStatus(photonView.ViewID, this.isReady);
     }
 }
