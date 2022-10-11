@@ -20,9 +20,16 @@ public class GameManager : MonoBehaviourPunCallbacks
         set { allPlayersReady = value; }
     }
 
+    public delegate void RestartLevel();
+    public event RestartLevel restartLevel;
+
     //list of players and their ready status.   
     public static Dictionary<object, bool> playersReady = new Dictionary<object, bool>();
-    public static GameManager instance;
+    private static GameManager instance;
+    public static GameManager Instance
+    {
+        get { return instance; }
+    }
 
     private void Awake()
     {
@@ -51,13 +58,10 @@ public class GameManager : MonoBehaviourPunCallbacks
             Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
         }
     }
-    private void Update()
-    {
-        print(allPlayersReady);
-    }
 
     public override void OnLeftRoom()
     {
+        restartLevel.Invoke();
         SceneManager.LoadScene(0);
     }
 
@@ -139,6 +143,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             RemovePlayerToList(otherPlayer.UserId);
         }
+        restartLevel.Invoke();
         allPlayersReady = false;
         print("Player Left Room");
     }

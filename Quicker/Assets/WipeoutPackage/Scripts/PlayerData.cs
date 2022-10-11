@@ -8,7 +8,7 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
 {
     [SerializeField] private float speed;
     [SerializeField] private PlayerAnimatorManager playerAnimator;
-    [SerializeField] private GameObject playerHUd;
+    [SerializeField] private GameObject playerHUD;
 
     private float slowSpeed = 0.1f;
     private float normalSpeed = 1;
@@ -26,6 +26,7 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
         get { return myFloor; }
     }
     public bool isReady;
+    public Vector3 startPos;
 
     public const byte spawnSpikeEvent = 1;
     public const byte spawnSlowEvent = 2;
@@ -38,19 +39,31 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
             PlayerData.LocalPlayerInstance = this.gameObject;
         }
 
-        GameManager.instance.AddPlayerToList(photonView.Controller.UserId);
+        GameManager.Instance.AddPlayerToList(photonView.Controller.UserId);
     }
-    
+
+    private void OnEnable()
+    {
+        GameManager.Instance.restartLevel += RestartPlayer;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.restartLevel -= RestartPlayer;
+    }
+
     private void Start()
     {
         if (photonView.IsMine && PhotonNetwork.IsConnected)
         {
             CameraFollow.instance.Init(this.transform);
             NetworkedEvents.instance.localPlayer = this;
+            startPos = transform.position;
+            RestartPlayer();
         }
         if(!photonView.IsMine)
         {
-            playerHUd.SetActive(false);
+            playerHUD.SetActive(false);
         }
     }
 
@@ -70,7 +83,15 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
         isReady = readyStatus;
         GameManager.SetPlayerReadyStatus(photonView.Controller.UserId, isReady);
     }
-    
+
+    public void RestartPlayer()
+    {
+        transform.position = startPos;
+        isReady = false;
+        playerHUD.GetComponentInChildren<TextHandler>().SetText("Not Ready");
+        GameManager.SetPlayerReadyStatus(photonView.Controller.UserId, this.isReady);
+    }
+
     private void Update()
     {
 
