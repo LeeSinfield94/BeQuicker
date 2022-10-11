@@ -67,7 +67,7 @@ namespace Launcher
         public override void OnJoinRandomFailed(short returnCode, string message)
         {
             Debug.LogWarningFormat("OnDisconnected() was called by PUN with reason {0}", message);
-            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
+            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom, PublishUserId = true });
         }
         public override void OnJoinedRoom()
         {

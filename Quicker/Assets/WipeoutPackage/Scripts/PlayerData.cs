@@ -37,7 +37,8 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
         {
             PlayerData.LocalPlayerInstance = this.gameObject;
         }
-        GameManager.playersReady.Add(photonView.ViewID, isReady);
+
+        GameManager.instance.AddPlayerToList(photonView.Controller.UserId);
     }
     
     private void Start()
@@ -52,8 +53,6 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
             playerHUd.SetActive(false);
         }
     }
-  
-
 
     public void SetSlowed(bool isSlow)
     {
@@ -69,11 +68,12 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
     public void SetReadyUpStatus(bool readyStatus)
     {
         isReady = readyStatus;
-        GameManager.SetPlayerReadyStatus(photonView.ViewID, isReady);
+        GameManager.SetPlayerReadyStatus(photonView.Controller.UserId, isReady);
     }
-
+    
     private void Update()
     {
+
         //Player should not start moving until all other players are ready.
         if (GameManager.AllPlayersReady)
         {
@@ -125,10 +125,10 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
             // Network player, receive data
             this.isSlowed = (bool)stream.ReceiveNext();
             this.isReady = (bool)stream.ReceiveNext();
+            print($"This ready up status = {isReady}");
+            GameManager.SetPlayerReadyStatus(photonView.Controller.UserId, this.isReady);
         }
 
-        if(!photonView.IsMine)
-            GameManager.SetPlayerReadyStatus(photonView.ViewID, this.isReady);
     }
 
 }

@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     //list of players and their ready status.   
-    public static Dictionary<int, bool> playersReady = new Dictionary<int, bool>();
+    public static Dictionary<object, bool> playersReady = new Dictionary<object, bool>();
     public static GameManager instance;
 
     private void Awake()
@@ -38,22 +38,24 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     private void Start()
     {
+        allPlayersReady = false;
         if (PlayerData.LocalPlayerInstance == null)
         {
+            int currentNumberOfPlayers = PhotonNetwork.PlayerList.Length - 1;
             Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
             // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-            GameObject go = PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber - 1].transform.position, Quaternion.identity, 0);
+            GameObject go = PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPoints[currentNumberOfPlayers].position, Quaternion.identity, 0);
         }
         else
         {
             Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
         }
     }
+    private void Update()
+    {
+        print(allPlayersReady);
+    }
 
-
-    /// <summary>
-    /// Called when the local player left the room. We need to load the launcher scene.
-    /// </summary>
     public override void OnLeftRoom()
     {
         SceneManager.LoadScene(0);
@@ -67,14 +69,24 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player other)
     {
-
+        print("EnteredRoom");
     }
 
-    public override void OnPlayerLeftRoom(Player other)
+
+    public void AddPlayerToList(object playerTagObject)
     {
-
+        if(!playersReady.ContainsKey(playerTagObject))
+        {
+            playersReady.Add(playerTagObject, false);
+        }
     }
-
+    public void RemovePlayerToList(object playerTagObject)
+    {
+        if (playersReady.ContainsKey(playerTagObject))
+        {
+            playersReady.Remove(playerTagObject);
+        }
+    }
     public static void SetPlayerTime(PlayerData player)
     {
         if(!playerTime.ContainsKey(player))
@@ -83,11 +95,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public static void SetPlayerReadyStatus(int viewID, bool isReady)
+    public static void SetPlayerReadyStatus(object playerTagObject, bool isReady)
     {
-        if (playersReady.ContainsKey(viewID))
+        if (playersReady.ContainsKey(playerTagObject))
         {
-            playersReady[viewID] = isReady;
+            playersReady[playerTagObject] = isReady;
         }
         
         CheckAllPlayersAreReady();
@@ -97,7 +109,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public static void CheckAllPlayersAreReady()
     {
-        foreach(KeyValuePair<int, bool> player in playersReady)
+        foreach(KeyValuePair<object, bool> player in playersReady)
         {
             if(player.Value == false)
             {
@@ -119,6 +131,16 @@ public class GameManager : MonoBehaviourPunCallbacks
         float time;
         playerTime.TryGetValue(player, out time);
         return time;
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        if (otherPlayer.UserId != null)
+        {
+            RemovePlayerToList(otherPlayer.UserId);
+        }
+        allPlayersReady = false;
+        print("Player Left Room");
     }
 
 }
