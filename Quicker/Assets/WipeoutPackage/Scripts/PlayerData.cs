@@ -9,9 +9,9 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] private float speed;
     [SerializeField] private PlayerAnimatorManager playerAnimator;
     [SerializeField] private GameObject playerHUD;
+    [SerializeField] private float normalSpeed = 1;
 
     private float slowSpeed = 0.1f;
-    private float normalSpeed = 1;
     private bool isSlowed;
     private bool canMoveForward = true;
     public bool CanMoveForward
@@ -76,7 +76,7 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
     public void SetSpeed()
     {
         speed = isSlowed ? slowSpeed : normalSpeed;
-        SetAnimaionSpeed();
+        SetAnimationSpeed();
     }
     public void SetReadyUpStatus(bool readyStatus)
     {
@@ -92,26 +92,41 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
         GameManager.SetPlayerReadyStatus(photonView.Controller.UserId, this.isReady);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
 
         //Player should not start moving until all other players are ready.
         if (GameManager.AllPlayersReady)
         {
             SetSpeed();
+            Movement();
+            SetAnimationSpeed();
         }
         else
         {
             speed = 0;
         }
-        SetAnimaionSpeed();
     }
 
-    public void SetAnimaionSpeed()
+    public void Movement()
+    {
+        Vector3 movement = transform.position;
+        movement += Vector3.forward * speed * Time.fixedDeltaTime;
+        if(Input.GetKeyDown(KeyCode.A))
+        {
+            movement += Vector3.left * speed;
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            movement -= Vector3.left * speed;
+        }
+        transform.position = movement;
+    }
+    public void SetAnimationSpeed()
     {
         if (playerAnimator != null)
         {
-            playerAnimator.SetAnimationSpeed(speed);
+            playerAnimator.SetAnimationSpeed(speed / Time.fixedDeltaTime);
         }
     }
 
