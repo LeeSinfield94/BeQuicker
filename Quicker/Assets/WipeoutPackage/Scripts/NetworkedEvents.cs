@@ -39,7 +39,7 @@ public class NetworkedEvents : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void HandleSpikeEvent()
     {
-        if(localPlayer != null)
+        if(localPlayer != null && PhotonNetwork.LocalPlayer == localPlayer.photonView.Controller)
         {
             localPlayer.MyFloor.SpawnObstacleOnFloor(ObstacleType.SPIKE);
         }
@@ -47,7 +47,7 @@ public class NetworkedEvents : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void HandleSlowEvent()
     {
-        if (localPlayer != null)
+        if (localPlayer != null && PhotonNetwork.LocalPlayer == localPlayer.photonView.Controller)
         {
             localPlayer.MyFloor.SpawnObstacleOnFloor(ObstacleType.SLOW);
         }

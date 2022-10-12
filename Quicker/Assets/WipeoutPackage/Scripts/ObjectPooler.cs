@@ -8,7 +8,7 @@ public struct ObjectsToSpawn
 {
     public int amountToSpawn;
     public GameObject objectToSpawn;
-    public Transform parent;
+    //public Transform parent;
 }
 public class ObjectPooler : MonoBehaviour
 {
@@ -27,7 +27,7 @@ public class ObjectPooler : MonoBehaviour
         {
             for(int i = 0; i < objectToSpawn.amountToSpawn; i++)
             {
-                GameObject go = Instantiate(objectToSpawn.objectToSpawn, objectToSpawn.parent);
+                GameObject go = Instantiate(objectToSpawn.objectToSpawn);
                 AddToList(go);
                 go.SetActive(false);
             }
@@ -60,7 +60,7 @@ public class ObjectPooler : MonoBehaviour
     {
         for(int i = 0; i < slowObjects.Count; i++)
         {
-            if(!slowObjects[i].activeInHierarchy && slowObjects[i].transform.parent == floor.transform)
+            if(!slowObjects[i].activeInHierarchy)
             {
                 return slowObjects[i];
             }

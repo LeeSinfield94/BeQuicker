@@ -520,16 +520,8 @@ MonoBehaviour:
   objectsToSpawn:
   - amountToSpawn: 10
     objectToSpawn: {fileID: 2971128588241154716, guid: b135efe1cf05a3f40b3c6998f4746ef4, type: 3}
-    parent: {fileID: 0}
   - amountToSpawn: 10
     objectToSpawn: {fileID: 8821130895318198200, guid: 9adae4f7a93bd1d4cb9f3689057f8414, type: 3}
-    parent: {fileID: 0}
-  - amountToSpawn: 10
-    objectToSpawn: {fileID: 2971128588241154716, guid: b135efe1cf05a3f40b3c6998f4746ef4, type: 3}
-    parent: {fileID: 0}
-  - amountToSpawn: 10
-    objectToSpawn: {fileID: 8821130895318198200, guid: 9adae4f7a93bd1d4cb9f3689057f8414, type: 3}
-    parent: {fileID: 0}
   slowObjects: []
   spikeObjects: []
 --- !u!114 &765403851
@@ -981,7 +973,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5292016386185170214, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 4.9998474
+      value: 4.999878
       objectReference: {fileID: 0}
     - target: {fileID: 5292016386185170214, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
       propertyPath: m_AnchoredPosition.y

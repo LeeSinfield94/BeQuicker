@@ -118,14 +118,14 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
     public void RaiseSlowEvent()
     {
         byte obstacleType = (byte)ObstacleType.SLOW;
-        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
         PhotonNetwork.RaiseEvent(spawnSlowEvent, obstacleType, raiseEventOptions, SendOptions.SendReliable);
     }
 
     public void RaiseSpikeEvent()
     {
         byte obstacleType = (byte)ObstacleType.SPIKE;
-        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
         PhotonNetwork.RaiseEvent(spawnSpikeEvent, obstacleType, raiseEventOptions, SendOptions.SendReliable);
     }
     public void SetMyTime()
