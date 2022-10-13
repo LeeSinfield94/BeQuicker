@@ -7,11 +7,12 @@ using UnityEngine;
 public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
 {
     [SerializeField] private float speed;
+    [SerializeField] private float strafeSpeed;
     [SerializeField] private PlayerAnimatorManager playerAnimator;
     [SerializeField] private GameObject playerHUD;
-    [SerializeField] private float normalSpeed = 1;
+    [SerializeField] private float normalSpeed = 4;
 
-    private float slowSpeed = 0.1f;
+    private float slowSpeed = 3f;
     private bool isSlowed;
     private bool canMoveForward = true;
     public bool CanMoveForward
@@ -94,31 +95,33 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
 
     private void FixedUpdate()
     {
-
         //Player should not start moving until all other players are ready.
         if (GameManager.AllPlayersReady)
         {
             SetSpeed();
-            Movement();
-            SetAnimationSpeed();
+            Movement(canMoveForward);
         }
         else
         {
             speed = 0;
         }
+        SetAnimationSpeed();
     }
 
-    public void Movement()
+    public void Movement(bool canMoveForward)
     {
         Vector3 movement = transform.position;
-        movement += Vector3.forward * speed * Time.fixedDeltaTime;
+        if (canMoveForward)
+        {
+            movement += Vector3.forward * speed * Time.fixedDeltaTime;
+        }
         if(Input.GetKeyDown(KeyCode.A))
         {
-            movement += Vector3.left * speed;
+            movement += Vector3.left * strafeSpeed * Time.fixedDeltaTime;
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
-            movement -= Vector3.left * speed;
+            movement -= Vector3.left * strafeSpeed * Time.fixedDeltaTime;
         }
         transform.position = movement;
     }
@@ -126,7 +129,7 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (playerAnimator != null)
         {
-            playerAnimator.SetAnimationSpeed(speed / Time.fixedDeltaTime);
+            playerAnimator.SetAnimationSpeed(speed);
         }
     }
 
