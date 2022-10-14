@@ -21,8 +21,27 @@ public class RaceTimer : MonoBehaviour
         }
     }
 
+    public void RestartTimer()
+    {
+        startTimer = false;
+        timer = 0;
+        UIManager.Instance.SetTimeText(timer);
+    }
     public static float GetCurrentTime()
     {
         return timer;
+    }
+    private IEnumerator WaitForGameManager()
+    {
+        yield return new WaitUntil(() => GameManager.Instance != null);
+        GameManager.Instance.restartLevel += RestartTimer;
+    }
+    private void OnEnable()
+    {
+        StartCoroutine(WaitForGameManager());
+    }
+    private void OnDisable()
+    {
+        GameManager.Instance.restartLevel -= RestartTimer;
     }
 }

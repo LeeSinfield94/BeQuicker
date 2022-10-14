@@ -19,4 +19,6 @@ public class SpikeObstacle : BaseObstacle
             player.CanMoveForward = true;
         }
     }
+
+
 }

@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject floorPrefab;
     [SerializeField] private List<Transform> spawnPoints = new List<Transform>();
 
-    private static byte SetPlayerIsReady = 1;
     private static bool allPlayersReady = false;
     public static bool AllPlayersReady
     {
@@ -21,15 +20,22 @@ public class GameManager : MonoBehaviourPunCallbacks
         set { allPlayersReady = value; }
     }
 
+    public delegate void RestartLevel();
+    public event RestartLevel restartLevel;
+
     //list of players and their ready status.   
-    public static Dictionary<PlayerData, bool> playersReady = new Dictionary<PlayerData, bool>();
-    public static GameManager instance;
+    public static Dictionary<object, bool> playersReady = new Dictionary<object, bool>();
+    private static GameManager instance;
+    public static GameManager Instance
+    {
+        get { return instance; }
+    }
 
     private void Awake()
     {
         if (instance != null)
         {
-            Destroy(instance);
+            Destroy(instance.gameObject);
             instance = this;
         }
         else
@@ -39,11 +45,13 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     private void Start()
     {
+        allPlayersReady = false;
         if (PlayerData.LocalPlayerInstance == null)
         {
+            int currentNumberOfPlayers = PhotonNetwork.PlayerList.Length - 1;
             Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
             // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-            PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber - 1].transform.position, Quaternion.identity, 0);
+            GameObject go = PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPoints[currentNumberOfPlayers].position, Quaternion.identity, 0);
         }
         else
         {
@@ -51,12 +59,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-
-    /// <summary>
-    /// Called when the local player left the room. We need to load the launcher scene.
-    /// </summary>
     public override void OnLeftRoom()
     {
+        restartLevel.Invoke();
         SceneManager.LoadScene(0);
     }
 
@@ -65,31 +70,27 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LeaveRoom();
     }
 
-    void LoadArena()
-    {
-        if (!PhotonNetwork.IsMasterClient)
-        {
-            Debug.LogError("PhotonNetwork : Trying to Load a level but we are not the master Client");
-        }
-    }
-
 
     public override void OnPlayerEnteredRoom(Player other)
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            LoadArena();
-        }
+        print("EnteredRoom");
     }
 
-    public override void OnPlayerLeftRoom(Player other)
+
+    public void AddPlayerToList(object playerTagObject)
     {
-        if (PhotonNetwork.IsMasterClient)
+        if(!playersReady.ContainsKey(playerTagObject))
         {
-            LoadArena();
+            playersReady.Add(playerTagObject, false);
         }
     }
-
+    public void RemovePlayerToList(object playerTagObject)
+    {
+        if (playersReady.ContainsKey(playerTagObject))
+        {
+            playersReady.Remove(playerTagObject);
+        }
+    }
     public static void SetPlayerTime(PlayerData player)
     {
         if(!playerTime.ContainsKey(player))
@@ -98,35 +99,29 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public static void SetPlayerReadyStatus(PlayerData player, bool isReady)
+    public static void SetPlayerReadyStatus(object playerTagObject, bool isReady)
     {
-        if (playersReady.ContainsKey(player))
+        if (playersReady.ContainsKey(playerTagObject))
         {
-            playersReady[player] = isReady;
+            playersReady[playerTagObject] = isReady;
         }
         
         CheckAllPlayersAreReady();
     }
-    private static void UpdatePlayersReady()
-    {
-        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-        PhotonNetwork.RaiseEvent(SetPlayerIsReady, GameManager.AllPlayersReady, raiseEventOptions, SendOptions.SendReliable);
-    }
+
    
 
     public static void CheckAllPlayersAreReady()
     {
-        foreach(KeyValuePair<PlayerData, bool> player in playersReady)
+        foreach(KeyValuePair<object, bool> player in playersReady)
         {
             if(player.Value == false)
             {
                allPlayersReady = false;
-               UpdatePlayersReady();
                return;
             }
         }
         allPlayersReady = true;
-        UpdatePlayersReady();
         StartTimer();
     }
 
@@ -142,13 +137,15 @@ public class GameManager : MonoBehaviourPunCallbacks
         return time;
     }
 
-    public void OnEvent(EventData photonEvent)
+    public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        allPlayersReady = (bool)photonEvent.CustomData;
-        Debug.Log($"All Players Ready = {allPlayersReady}");
-        if(allPlayersReady)
+        if (otherPlayer.UserId != null)
         {
-            StartTimer();
+            RemovePlayerToList(otherPlayer.UserId);
         }
+        restartLevel.Invoke();
+        allPlayersReady = false;
+        print("Player Left Room");
     }
+
 }

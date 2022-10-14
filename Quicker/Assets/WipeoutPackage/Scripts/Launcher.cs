@@ -22,7 +22,7 @@ namespace Launcher
         private GameObject progressLabel;
 
         bool isConnecting;
-
+        bool isHosting = false;
         void Awake()
         {
             PhotonNetwork.AutomaticallySyncScene = true;
@@ -32,8 +32,26 @@ namespace Launcher
             progressLabel.SetActive(false);
             controlPanel.SetActive(true);
         }
-        public void Connect()
+
+        public void HostGame()
         {
+            isHosting = true;
+            progressLabel.SetActive(true);
+            controlPanel.SetActive(false);
+            if (PhotonNetwork.IsConnected)
+            {
+                PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom, PublishUserId = true });
+            }
+            else
+            {
+                isConnecting = PhotonNetwork.ConnectUsingSettings();
+                PhotonNetwork.GameVersion = gameVersion;
+            }
+        }
+
+        public void JoinGame()
+        {
+            isHosting = false;
             progressLabel.SetActive(true);
             controlPanel.SetActive(false);
             if (PhotonNetwork.IsConnected)
@@ -46,12 +64,20 @@ namespace Launcher
                 PhotonNetwork.GameVersion = gameVersion;
             }
         }
+
         public override void OnConnectedToMaster()
         {
             Debug.Log("OnConnectedToMaster() was called by PUN");
             if (isConnecting)
             {
-                PhotonNetwork.JoinRandomRoom();
+                if(isHosting)
+                {
+                    PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom, PublishUserId = true });
+                }
+                else
+                {
+                    PhotonNetwork.JoinRandomRoom();
+                }
                 isConnecting = false;
             }
         }
@@ -67,7 +93,7 @@ namespace Launcher
         public override void OnJoinRandomFailed(short returnCode, string message)
         {
             Debug.LogWarningFormat("OnDisconnected() was called by PUN with reason {0}", message);
-            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
+            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom, PublishUserId = true });
         }
         public override void OnJoinedRoom()
         {

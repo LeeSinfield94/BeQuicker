@@ -468,7 +468,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1754239853382173996, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Connect
+      value: JoinGame
       objectReference: {fileID: 0}
     - target: {fileID: 1754239853382173996, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -634,7 +634,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5292016386185170214, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 4.9998474
+      value: 4.999878
       objectReference: {fileID: 0}
     - target: {fileID: 5292016386185170214, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -644,6 +644,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1006516542}
+    - target: {fileID: 5494318265919420039, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HostGame
+      objectReference: {fileID: 0}
     - target: {fileID: 5786306801949928531, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
       propertyPath: m_SizeDelta.x
       value: -35.7867
