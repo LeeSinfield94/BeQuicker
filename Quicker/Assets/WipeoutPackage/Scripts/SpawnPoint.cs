@@ -14,4 +14,14 @@ public class SpawnPoint : MonoBehaviour
         get;
         set;
     }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        PlayerData player = other.transform.gameObject.GetComponent<PlayerData>();
+        if (player)
+        {
+            player.MyFloor = GetComponentInParent<PlayerFloor>();
+        }
+    }
 }

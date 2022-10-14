@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class PlayerFloor : MonoBehaviour
 {
+    [SerializeField] private List<Transform> lanes = new List<Transform>();
+    public List<Transform> Lanes
+    {
+        get { return lanes; }
+    }
 
     public void SpawnObstacleOnFloor(ObstacleType type)
     {
@@ -12,12 +17,4 @@ public class PlayerFloor : MonoBehaviour
         go.SetActive(true); 
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        PlayerData player = other.transform.gameObject.GetComponent<PlayerData>();
-        if (player)
-        {
-            player.MyFloor = this;
-        }
-    }
 }

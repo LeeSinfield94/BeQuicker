@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 4325898076650669357}
   - component: {fileID: 390057129428576255}
   - component: {fileID: 2730703874226500675}
-  - component: {fileID: 4763875967161118520}
   m_Layer: 0
   m_Name: MiddleLane
   m_TagString: Untagged
@@ -110,18 +109,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4763875967161118520
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 621592435496328331}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a601053d463a22e4aa8b03cc3c932d4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1495601880542225342
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,7 +121,6 @@ GameObject:
   - component: {fileID: 6141392033840463694}
   - component: {fileID: 1176026796584664935}
   - component: {fileID: 6999692367372161947}
-  - component: {fileID: 6491385528163218527}
   m_Layer: 0
   m_Name: RightLane
   m_TagString: Untagged
@@ -218,18 +204,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6491385528163218527
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1495601880542225342}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a601053d463a22e4aa8b03cc3c932d4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1788249476127450963
 GameObject:
   m_ObjectHideFlags: 0
@@ -257,7 +231,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1788249476127450963}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.56, z: -48}
+  m_LocalPosition: {x: 0, y: 2, z: -48}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5086526824751148132}
@@ -312,8 +286,8 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1788249476127450963}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
+  m_IsTrigger: 1
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -341,7 +315,6 @@ GameObject:
   - component: {fileID: 1906162563419597978}
   - component: {fileID: 5068716134670415534}
   - component: {fileID: 4631692615825472004}
-  - component: {fileID: 4233756531353682625}
   m_Layer: 0
   m_Name: LeftLane
   m_TagString: Untagged
@@ -425,18 +398,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4233756531353682625
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2267101393208820944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a601053d463a22e4aa8b03cc3c932d4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8463210509993400216
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,6 +407,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5086526824751148132}
+  - component: {fileID: 7024728048128791346}
   m_Layer: 0
   m_Name: PlayerFloorParent
   m_TagString: Untagged
@@ -471,3 +433,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7024728048128791346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8463210509993400216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a601053d463a22e4aa8b03cc3c932d4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lanes:
+  - {fileID: 8441997422976726369}
+  - {fileID: 8000512859404895624}
+  - {fileID: 159654559250865588}

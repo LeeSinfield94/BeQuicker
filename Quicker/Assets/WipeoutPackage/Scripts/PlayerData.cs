@@ -14,6 +14,7 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
 
     private float slowSpeed = 3f;
     private bool isSlowed;
+    private int currentLane = 1;
     private bool canMoveForward = true;
     public bool CanMoveForward
     {
@@ -28,6 +29,7 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
     }
     public bool isReady;
     public Vector3 startPos;
+    
 
     public const byte spawnSpikeEvent = 1;
     public const byte spawnSlowEvent = 2;
@@ -92,7 +94,25 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
         playerHUD.GetComponentInChildren<TextHandler>().SetText("Not Ready");
         GameManager.SetPlayerReadyStatus(photonView.Controller.UserId, this.isReady);
     }
-
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            currentLane--;
+            if (currentLane <= 0)
+            {
+                currentLane = 0;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            currentLane++;
+            if (currentLane >= myFloor.Lanes.Count - 1)
+            {
+                currentLane = myFloor.Lanes.Count - 1;
+            }
+        }
+    }
     private void FixedUpdate()
     {
         //Player should not start moving until all other players are ready.
@@ -111,18 +131,13 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
     public void Movement(bool canMoveForward)
     {
         Vector3 movement = transform.position;
+
         if (canMoveForward)
         {
             movement += Vector3.forward * speed * Time.fixedDeltaTime;
         }
-        if(Input.GetKeyDown(KeyCode.A))
-        {
-            movement += Vector3.left * strafeSpeed * Time.fixedDeltaTime;
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            movement -= Vector3.left * strafeSpeed * Time.fixedDeltaTime;
-        }
+        movement.x = myFloor.Lanes[currentLane].position.x;
+        print(currentLane);
         transform.position = movement;
     }
     public void SetAnimationSpeed()
@@ -158,16 +173,26 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
             // We own this player: send the others our data
             stream.SendNext(isSlowed);
             stream.SendNext(isReady);
+            stream.SendNext(currentLane);
         }
         else
         {
             // Network player, receive data
             this.isSlowed = (bool)stream.ReceiveNext();
             this.isReady = (bool)stream.ReceiveNext();
+            this.currentLane = (int)stream.ReceiveNext();
             print($"This ready up status = {isReady}");
             GameManager.SetPlayerReadyStatus(photonView.Controller.UserId, this.isReady);
-        }
 
+            if(myFloor != null)
+            {
+                Vector3 movement = transform.position;
+                movement.x = myFloor.Lanes[currentLane].position.x;
+                this.transform.position = movement;
+            }
+
+
+        }
     }
 
 }
