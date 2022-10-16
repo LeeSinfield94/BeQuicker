@@ -140,6 +140,7 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
         print(currentLane);
         transform.position = movement;
     }
+
     public void SetAnimationSpeed()
     {
         if (playerAnimator != null)
@@ -150,9 +151,9 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
 
     public void RaiseSlowEvent()
     {
-        byte obstacleType = (byte)ObstacleType.SLOW;
+        object[] content = new object[] { PhotonNetwork.LocalPlayer.ActorNumber };
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-        PhotonNetwork.RaiseEvent(spawnSlowEvent, obstacleType, raiseEventOptions, SendOptions.SendReliable);
+        PhotonNetwork.RaiseEvent(spawnSlowEvent, content, raiseEventOptions, SendOptions.SendReliable);
     }
 
     public void RaiseSpikeEvent()

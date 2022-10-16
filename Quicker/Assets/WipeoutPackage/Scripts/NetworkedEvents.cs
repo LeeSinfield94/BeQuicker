@@ -26,32 +26,26 @@ public class NetworkedEvents : MonoBehaviourPunCallbacks, IOnEventCallback
     public void OnEvent(EventData photonEvent)
     {
         byte eventCode = photonEvent.Code;
-        switch(eventCode)
+        print(photonEvent.CustomData);
+        switch (eventCode)
         {
             case 1:
-                HandleSpikeEvent();
-                break;
-            case 2:
-                HandleSlowEvent();
+                HandleSpikeEvent(photonEvent.CustomData);
                 break;
         }
     }
 
-    public void HandleSpikeEvent()
+    public void HandleSpikeEvent(object data)
     {
-        if(localPlayer != null && PhotonNetwork.LocalPlayer == localPlayer.photonView.Controller)
+        print(data);
+        int actorNumber = (int)data;
+        print(actorNumber + "" + PhotonNetwork.LocalPlayer.ActorNumber);
+        if(actorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
         {
             localPlayer.MyFloor.SpawnObstacleOnFloor(ObstacleType.SPIKE);
         }
     }
 
-    public void HandleSlowEvent()
-    {
-        if (localPlayer != null && PhotonNetwork.LocalPlayer == localPlayer.photonView.Controller)
-        {
-            localPlayer.MyFloor.SpawnObstacleOnFloor(ObstacleType.SLOW);
-        }
-    }
     private void OnEnable()
     {
         PhotonNetwork.AddCallbackTarget(this);
