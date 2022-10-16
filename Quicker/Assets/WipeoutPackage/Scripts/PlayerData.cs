@@ -151,6 +151,7 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
 
     public void RaiseSlowEvent()
     {
+        print("Test");
         object[] content = new object[] { PhotonNetwork.LocalPlayer.ActorNumber };
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
         PhotonNetwork.RaiseEvent(spawnSlowEvent, content, raiseEventOptions, SendOptions.SendReliable);
