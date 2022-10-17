@@ -10,10 +10,10 @@ public class PlayerFloor : MonoBehaviour
         get { return lanes; }
     }
 
-    public void SpawnObstacleOnFloor(ObstacleType type)
+    public void SpawnObstacleOnFloor(ObstacleType type, int laneIndex)
     {
         GameObject go = ObjectPooler.instance.GetObject(type, this);
-        go.transform.SetParent(this.transform);
+        go.transform.SetParent(lanes[laneIndex]);
         go.SetActive(true); 
     }
 

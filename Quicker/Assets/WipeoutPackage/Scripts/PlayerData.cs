@@ -31,8 +31,6 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
     public Vector3 startPos;
     
 
-    public const byte spawnSpikeEvent = 1;
-    public const byte spawnSlowEvent = 2;
 
     public static GameObject LocalPlayerInstance;
     private void Awake()
@@ -154,15 +152,36 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
         print("Test");
         object[] content = new object[] { PhotonNetwork.LocalPlayer.ActorNumber };
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-        PhotonNetwork.RaiseEvent(spawnSlowEvent, content, raiseEventOptions, SendOptions.SendReliable);
+        PhotonNetwork.RaiseEvent(NetworkEventCodes.spawnSlowEvent, content, raiseEventOptions, SendOptions.SendReliable);
     }
 
     public void RaiseSpikeEvent()
     {
-        byte obstacleType = (byte)ObstacleType.SPIKE;
+        object[] content = new object[] { PhotonNetwork.LocalPlayer.ActorNumber };
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-        PhotonNetwork.RaiseEvent(spawnSpikeEvent, obstacleType, raiseEventOptions, SendOptions.SendReliable);
+        PhotonNetwork.RaiseEvent(NetworkEventCodes.spawnSpikeEvent, content, raiseEventOptions, SendOptions.SendReliable);
     }
+
+    public void SpawnSpike(ObstacleType type, int lane)
+    {
+        SpawnOnFloor(type, lane);
+        photonView.RPC("SpawnSpikeForOthers", RpcTarget.Others, type, lane);
+    }
+
+    [PunRPC]
+    public void SpawnSpikeForOthers(ObstacleType type, int lane)
+    {
+        SpawnOnFloor(type, lane);
+    }
+
+    private void SpawnOnFloor(ObstacleType type, int lane)
+    {
+        if (myFloor)
+        {
+            myFloor.SpawnObstacleOnFloor(type, lane);
+        }
+    }
+
     public void SetMyTime()
     {
         GameManager.SetPlayerTime(this);
