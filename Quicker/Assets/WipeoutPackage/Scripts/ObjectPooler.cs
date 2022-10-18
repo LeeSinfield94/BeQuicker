@@ -1,3 +1,6 @@
+using ExitGames.Client.Photon;
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +17,6 @@ public class ObjectPooler : MonoBehaviour
 {
     [SerializeField] private List<ObjectsToSpawn> objectsToSpawn = new List<ObjectsToSpawn>();
 
-    public List<GameObject> slowObjects = new List<GameObject>();
     public List<GameObject> spikeObjects = new List<GameObject>();
     public static ObjectPooler instance;
     private void Awake()
@@ -23,48 +25,51 @@ public class ObjectPooler : MonoBehaviour
     }
     public void Start()
     {
-        foreach(ObjectsToSpawn objectToSpawn in objectsToSpawn)
+        if(PhotonNetwork.IsMasterClient)
         {
-            for(int i = 0; i < objectToSpawn.amountToSpawn; i++)
+            SpawnTraps();
+        }
+
+    }
+    public void AddToList(GameObject go)
+    {
+        spikeObjects.Add(go);
+    }
+
+    public void SpawnTraps()
+    {
+        foreach (ObjectsToSpawn objectToSpawn in objectsToSpawn)
+        {
+            for (int i = 0; i < objectToSpawn.amountToSpawn; i++)
             {
-                GameObject go = Instantiate(objectToSpawn.objectToSpawn);
+                GameObject go = PhotonNetwork.Instantiate(objectToSpawn.objectToSpawn.name, Vector3.zero, Quaternion.identity);
                 AddToList(go);
                 go.SetActive(false);
             }
         }
+
+        GameObject.FindObjectOfType<PlayerData>().CallUpdateTrapObjects();
     }
-    public void AddToList(GameObject go)
+
+    public void GetAllSpawnedObjects()
     {
-        if (go.CompareTag("Slow"))
+        var spikes = GameObject.FindGameObjectsWithTag("Spike");
+        foreach(GameObject go in spikes)
         {
-            slowObjects.Add(go);
-        }
-        else
-        {
-            spikeObjects.Add(go);
+            go.SetActive(false);
+            AddToList(go);
         }
     }
-    public GameObject GetObject(ObstacleType type, PlayerFloor floor)
+
+    public GameObject GetObject(ObstacleType type, PlayerFloor floor, out Vector3 yOffset)
     {
         switch (type)
         {
-            case ObstacleType.SLOW:
-                return GetSlowObject(floor);
             case ObstacleType.SPIKE:
+                yOffset = GetSpikeObject(floor).GetComponent<SpikeObstacle>().yOffset;
                 return GetSpikeObject(floor);
         }
-        return null;
-    }
-
-    public GameObject GetSlowObject(PlayerFloor floor)
-    {
-        for(int i = 0; i < slowObjects.Count; i++)
-        {
-            if(!slowObjects[i].activeInHierarchy)
-            {
-                return slowObjects[i];
-            }
-        }
+        yOffset = Vector3.zero;
         return null;
     }
 

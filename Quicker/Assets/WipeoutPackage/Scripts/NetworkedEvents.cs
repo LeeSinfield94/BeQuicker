@@ -26,23 +26,20 @@ public class NetworkedEvents : MonoBehaviourPunCallbacks, IOnEventCallback
     public void OnEvent(EventData photonEvent)
     {
         byte eventCode = photonEvent.Code;
-        print(photonEvent.CustomData);
         switch (eventCode)
         {
             case 1:
-                HandleSpikeEvent(photonEvent.CustomData);
+                HandleSpikeEvent((object[])photonEvent.CustomData, photonEvent);
                 break;
         }
     }
 
-    public void HandleSpikeEvent(object data)
+    public void HandleSpikeEvent(object[] data, EventData photonEvent)
     {
-        print(data);
-        int actorNumber = (int)data;
-        print(actorNumber + "" + PhotonNetwork.LocalPlayer.ActorNumber);
-        if(actorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
+        int lane = (int)data[0];
+        if(photonEvent.Sender != PhotonNetwork.LocalPlayer.ActorNumber)
         {
-            localPlayer.MyFloor.SpawnObstacleOnFloor(ObstacleType.SPIKE);
+            localPlayer.SpawnSpike(ObstacleType.SPIKE, lane);
         }
     }
 
@@ -55,6 +52,5 @@ public class NetworkedEvents : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         PhotonNetwork.RemoveCallbackTarget(this);
     }
-
 
 }

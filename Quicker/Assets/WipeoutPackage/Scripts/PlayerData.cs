@@ -15,6 +15,7 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
     private float slowSpeed = 3f;
     private bool isSlowed;
     private int currentLane = 1;
+    private int laneToPlaceTrap = 1;
     private bool canMoveForward = true;
     public bool CanMoveForward
     {
@@ -31,8 +32,6 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
     public Vector3 startPos;
     
 
-    public const byte spawnSpikeEvent = 1;
-    public const byte spawnSlowEvent = 2;
 
     public static GameObject LocalPlayerInstance;
     private void Awake()
@@ -94,6 +93,23 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
         playerHUD.GetComponentInChildren<TextHandler>().SetText("Not Ready");
         GameManager.SetPlayerReadyStatus(photonView.Controller.UserId, this.isReady);
     }
+
+    public void CallUpdateTrapObjects()
+    {
+        photonView.RPC("UpdateTrapObjects", RpcTarget.OthersBuffered);
+    }
+
+    [PunRPC]
+    public void UpdateTrapObjects()
+    {
+        ObjectPooler.instance.GetAllSpawnedObjects();
+    }
+
+    public void SetCurrentLane(int lane)
+    {
+        laneToPlaceTrap = lane;
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
@@ -113,6 +129,7 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
     }
+
     private void FixedUpdate()
     {
         //Player should not start moving until all other players are ready.
@@ -137,7 +154,6 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
             movement += Vector3.forward * speed * Time.fixedDeltaTime;
         }
         movement.x = myFloor.Lanes[currentLane].position.x;
-        print(currentLane);
         transform.position = movement;
     }
 
@@ -149,19 +165,38 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    public void RaiseSlowEvent()
-    {
-        object[] content = new object[] { PhotonNetwork.LocalPlayer.ActorNumber };
-        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-        PhotonNetwork.RaiseEvent(spawnSlowEvent, content, raiseEventOptions, SendOptions.SendReliable);
-    }
-
     public void RaiseSpikeEvent()
     {
-        byte obstacleType = (byte)ObstacleType.SPIKE;
-        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-        PhotonNetwork.RaiseEvent(spawnSpikeEvent, obstacleType, raiseEventOptions, SendOptions.SendReliable);
+        if(TrapTimer.CanPlaceTrap)
+        {
+            object[] content = new object[] { laneToPlaceTrap };
+            RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+            PhotonNetwork.RaiseEvent(NetworkEventCodes.spawnSpikeEvent, content, raiseEventOptions, SendOptions.SendReliable);
+            StartCoroutine(TrapTimer.WaitForTimer());
+        }
+
     }
+
+    public void SpawnSpike(ObstacleType type, int lane)
+    {
+        CallSpawnObstacleOnFloor(type, lane);
+        photonView.RPC("SpawnSpikeForOthers", RpcTarget.Others, type, lane);
+    }
+
+    [PunRPC]
+    public void SpawnSpikeForOthers(ObstacleType type, int lane)
+    {
+        CallSpawnObstacleOnFloor(type, lane);
+    }
+
+    private void CallSpawnObstacleOnFloor(ObstacleType type, int lane)
+    {
+        if (myFloor)
+        {
+            myFloor.SpawnObstacleOnFloor(type, lane, this);
+        }
+    }
+
     public void SetMyTime()
     {
         GameManager.SetPlayerTime(this);
