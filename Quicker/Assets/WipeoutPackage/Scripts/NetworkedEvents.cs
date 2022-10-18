@@ -39,7 +39,7 @@ public class NetworkedEvents : MonoBehaviourPunCallbacks, IOnEventCallback
         int actorNumber = (int)data[0];
         if(photonEvent.Sender != PhotonNetwork.LocalPlayer.ActorNumber)
         {
-            localPlayer.MyFloor.SpawnObstacleOnFloor(ObstacleType.SPIKE, 0);
+            localPlayer.SpawnSpike(ObstacleType.SPIKE, 0);
         }
     }
 

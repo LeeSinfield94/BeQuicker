@@ -92,6 +92,18 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
         playerHUD.GetComponentInChildren<TextHandler>().SetText("Not Ready");
         GameManager.SetPlayerReadyStatus(photonView.Controller.UserId, this.isReady);
     }
+
+    public void CallUpdateTrapObjects()
+    {
+        photonView.RPC("UpdateTrapObjects", RpcTarget.OthersBuffered);
+    }
+
+    [PunRPC]
+    public void UpdateTrapObjects()
+    {
+        ObjectPooler.instance.GetAllSpawnedObjects();
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
@@ -147,14 +159,6 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    public void RaiseSlowEvent()
-    {
-        print("Test");
-        object[] content = new object[] { PhotonNetwork.LocalPlayer.ActorNumber };
-        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-        PhotonNetwork.RaiseEvent(NetworkEventCodes.spawnSlowEvent, content, raiseEventOptions, SendOptions.SendReliable);
-    }
-
     public void RaiseSpikeEvent()
     {
         object[] content = new object[] { PhotonNetwork.LocalPlayer.ActorNumber };
@@ -164,17 +168,17 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
 
     public void SpawnSpike(ObstacleType type, int lane)
     {
-        SpawnOnFloor(type, lane);
+        CallSpawnObstacleOnFloor(type, lane);
         photonView.RPC("SpawnSpikeForOthers", RpcTarget.Others, type, lane);
     }
 
     [PunRPC]
     public void SpawnSpikeForOthers(ObstacleType type, int lane)
     {
-        SpawnOnFloor(type, lane);
+        CallSpawnObstacleOnFloor(type, lane);
     }
 
-    private void SpawnOnFloor(ObstacleType type, int lane)
+    private void CallSpawnObstacleOnFloor(ObstacleType type, int lane)
     {
         if (myFloor)
         {

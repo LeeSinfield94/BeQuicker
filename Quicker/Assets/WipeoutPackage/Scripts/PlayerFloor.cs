@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerFloor : MonoBehaviour
 {
     [SerializeField] private List<Transform> lanes = new List<Transform>();
+
     public List<Transform> Lanes
     {
         get { return lanes; }
@@ -12,9 +13,10 @@ public class PlayerFloor : MonoBehaviour
 
     public void SpawnObstacleOnFloor(ObstacleType type, int laneIndex)
     {
-        GameObject go = ObjectPooler.instance.GetObject(type, this);
+        Vector3 offset;
+        GameObject go = ObjectPooler.instance.GetObject(type, this, out offset);
         go.transform.SetParent(lanes[laneIndex]);
+        go.transform.position = lanes[laneIndex].position + offset;
         go.SetActive(true); 
     }
-
 }

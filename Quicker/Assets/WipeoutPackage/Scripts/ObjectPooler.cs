@@ -29,6 +29,7 @@ public class ObjectPooler : MonoBehaviour
         {
             SpawnTraps();
         }
+
     }
     public void AddToList(GameObject go)
     {
@@ -46,8 +47,8 @@ public class ObjectPooler : MonoBehaviour
                 go.SetActive(false);
             }
         }
-        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
-        PhotonNetwork.RaiseEvent(NetworkEventCodes.UpdateSpawnedObjectsEvent, null, raiseEventOptions, SendOptions.SendReliable);
+
+        GameObject.FindObjectOfType<PlayerData>().CallUpdateTrapObjects();
     }
 
     public void GetAllSpawnedObjects()
@@ -56,17 +57,19 @@ public class ObjectPooler : MonoBehaviour
         foreach(GameObject go in spikes)
         {
             go.SetActive(false);
-            spikeObjects.Add(go);
+            AddToList(go);
         }
     }
 
-    public GameObject GetObject(ObstacleType type, PlayerFloor floor)
+    public GameObject GetObject(ObstacleType type, PlayerFloor floor, out Vector3 offset)
     {
         switch (type)
         {
             case ObstacleType.SPIKE:
+                offset = GetSpikeObject(floor).GetComponent<SpikeObstacle>().offset;
                 return GetSpikeObject(floor);
         }
+        offset = Vector3.zero;
         return null;
     }
 
