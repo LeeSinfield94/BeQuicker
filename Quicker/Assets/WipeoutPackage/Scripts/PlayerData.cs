@@ -15,6 +15,7 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
     private float slowSpeed = 3f;
     private bool isSlowed;
     private int currentLane = 1;
+    private int laneToPlaceTrap = 1;
     private bool canMoveForward = true;
     public bool CanMoveForward
     {
@@ -104,6 +105,10 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
         ObjectPooler.instance.GetAllSpawnedObjects();
     }
 
+    public void SetCurrentLane(int lane)
+    {
+        laneToPlaceTrap = lane;
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
@@ -147,7 +152,6 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
             movement += Vector3.forward * speed * Time.fixedDeltaTime;
         }
         movement.x = myFloor.Lanes[currentLane].position.x;
-        print(currentLane);
         transform.position = movement;
     }
 
@@ -161,7 +165,7 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
 
     public void RaiseSpikeEvent()
     {
-        object[] content = new object[] { PhotonNetwork.LocalPlayer.ActorNumber };
+        object[] content = new object[] { laneToPlaceTrap };
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
         PhotonNetwork.RaiseEvent(NetworkEventCodes.spawnSpikeEvent, content, raiseEventOptions, SendOptions.SendReliable);
     }
@@ -182,7 +186,7 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (myFloor)
         {
-            myFloor.SpawnObstacleOnFloor(type, lane);
+            myFloor.SpawnObstacleOnFloor(type, lane, this);
         }
     }
 

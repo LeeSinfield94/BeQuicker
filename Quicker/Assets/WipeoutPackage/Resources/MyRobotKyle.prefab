@@ -1836,6 +1836,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1660451163778978747}
     m_Modifications:
+    - target: {fileID: 632704461047285541, guid: eaaad87c836b2264c815670573f43025, type: 3}
+      propertyPath: m_AllowSwitchOff
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 734408803196258219, guid: eaaad87c836b2264c815670573f43025, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2179521496871350845}
+    - target: {fileID: 1441276872373092172, guid: eaaad87c836b2264c815670573f43025, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2179521496871350845}
+    - target: {fileID: 1707054136665559374, guid: eaaad87c836b2264c815670573f43025, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2179521496871350845}
+    - target: {fileID: 1707054136665559374, guid: eaaad87c836b2264c815670573f43025, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetCurrentLane
+      objectReference: {fileID: 0}
+    - target: {fileID: 1707054136665559374, guid: eaaad87c836b2264c815670573f43025, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4336914006818410872, guid: eaaad87c836b2264c815670573f43025, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -1936,6 +1960,26 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2179521496871350845}
+    - target: {fileID: 8057995531489190686, guid: eaaad87c836b2264c815670573f43025, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2179521496871350845}
+    - target: {fileID: 8274973665711144230, guid: eaaad87c836b2264c815670573f43025, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8274973665711144230, guid: eaaad87c836b2264c815670573f43025, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2179521496871350845}
+    - target: {fileID: 8274973665711144230, guid: eaaad87c836b2264c815670573f43025, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetCurrentLane
+      objectReference: {fileID: 0}
+    - target: {fileID: 8274973665711144230, guid: eaaad87c836b2264c815670573f43025, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eaaad87c836b2264c815670573f43025, type: 3}
 --- !u!1 &1502183134654046641 stripped

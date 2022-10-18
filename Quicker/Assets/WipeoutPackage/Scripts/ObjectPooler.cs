@@ -61,15 +61,15 @@ public class ObjectPooler : MonoBehaviour
         }
     }
 
-    public GameObject GetObject(ObstacleType type, PlayerFloor floor, out Vector3 offset)
+    public GameObject GetObject(ObstacleType type, PlayerFloor floor, out Vector3 yOffset)
     {
         switch (type)
         {
             case ObstacleType.SPIKE:
-                offset = GetSpikeObject(floor).GetComponent<SpikeObstacle>().offset;
+                yOffset = GetSpikeObject(floor).GetComponent<SpikeObstacle>().yOffset;
                 return GetSpikeObject(floor);
         }
-        offset = Vector3.zero;
+        yOffset = Vector3.zero;
         return null;
     }
 

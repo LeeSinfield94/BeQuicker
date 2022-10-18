@@ -36,10 +36,10 @@ public class NetworkedEvents : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void HandleSpikeEvent(object[] data, EventData photonEvent)
     {
-        int actorNumber = (int)data[0];
+        int lane = (int)data[0];
         if(photonEvent.Sender != PhotonNetwork.LocalPlayer.ActorNumber)
         {
-            localPlayer.SpawnSpike(ObstacleType.SPIKE, 0);
+            localPlayer.SpawnSpike(ObstacleType.SPIKE, lane);
         }
     }
 
