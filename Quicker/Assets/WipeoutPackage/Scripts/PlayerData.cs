@@ -109,6 +109,7 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
     {
         laneToPlaceTrap = lane;
     }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
@@ -128,6 +129,7 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
     }
+
     private void FixedUpdate()
     {
         //Player should not start moving until all other players are ready.
@@ -165,9 +167,14 @@ public class PlayerData : MonoBehaviourPunCallbacks, IPunObservable
 
     public void RaiseSpikeEvent()
     {
-        object[] content = new object[] { laneToPlaceTrap };
-        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-        PhotonNetwork.RaiseEvent(NetworkEventCodes.spawnSpikeEvent, content, raiseEventOptions, SendOptions.SendReliable);
+        if(TrapTimer.CanPlaceTrap)
+        {
+            object[] content = new object[] { laneToPlaceTrap };
+            RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+            PhotonNetwork.RaiseEvent(NetworkEventCodes.spawnSpikeEvent, content, raiseEventOptions, SendOptions.SendReliable);
+            StartCoroutine(TrapTimer.WaitForTimer());
+        }
+
     }
 
     public void SpawnSpike(ObstacleType type, int lane)
