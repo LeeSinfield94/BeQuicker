@@ -16,6 +16,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     private bool isSlowed;
     private int currentLane = 1;
     private int laneToPlaceTrap = 1;
+    private int otherPlayerCurrentLane;
+
+    public bool isReady;
+    public Vector3 startPos;
+
     private bool canMoveForward = true;
     public bool CanMoveForward
     {
@@ -28,17 +33,16 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         set { myFloor = value; }
         get { return myFloor; }
     }
-    public bool isReady;
-    public Vector3 startPos;
-    
 
 
     public static GameObject LocalPlayerInstance;
+
     private void Awake()
     {
         if (photonView.IsMine)
         {
             PlayerController.LocalPlayerInstance = this.gameObject;
+            PhotonNetwork.LocalPlayer.TagObject = this.gameObject;
         }
 
         GameManager.Instance.AddPlayerToList(photonView.Controller.UserId);
@@ -105,9 +109,19 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         ObjectPooler.instance.GetAllSpawnedObjects();
     }
 
+    public int GetOtherPlayersCurrentLane()
+    {
+        return otherPlayerCurrentLane;
+    }
+
     public void SetCurrentLane(int lane)
     {
         laneToPlaceTrap = lane;
+    }
+    
+    public void SetOtherPlayerCurrentLane(int otherCurrentLane)
+    {
+        otherPlayerCurrentLane = otherCurrentLane;
     }
 
     private void Update()
@@ -217,6 +231,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             this.isSlowed = (bool)stream.ReceiveNext();
             this.isReady = (bool)stream.ReceiveNext();
             this.currentLane = (int)stream.ReceiveNext();
+            
             print($"This ready up status = {isReady}");
             GameManager.SetPlayerReadyStatus(photonView.Controller.UserId, this.isReady);
 
@@ -226,8 +241,15 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
                 movement.x = myFloor.Lanes[currentLane].position.x;
                 this.transform.position = movement;
             }
-
-
+            GameObject localPlayer = PhotonNetwork.LocalPlayer.TagObject as GameObject;
+            if (localPlayer != null)
+            {
+                localPlayer.GetComponent<PlayerController>().SetOtherPlayerCurrentLane(currentLane);
+            }
+            else
+            {
+                print("SHIIIIIT");
+            }
         }
     }
 

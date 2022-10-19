@@ -689,9 +689,9 @@ MonoBehaviour:
   playerAnimator: {fileID: 4146775068623485882}
   playerHUD: {fileID: 1502183134654046641}
   normalSpeed: 4
-  myFloor: {fileID: 0}
   isReady: 0
   startPos: {x: 0, y: 0, z: 0}
+  myFloor: {fileID: 0}
 --- !u!114 &4146775068623485882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1862,6 +1862,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4336914006818410872, guid: eaaad87c836b2264c815670573f43025, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 2179521496871350845}
+    - target: {fileID: 4609030510096316376, guid: eaaad87c836b2264c815670573f43025, type: 3}
+      propertyPath: player
       value: 
       objectReference: {fileID: 2179521496871350845}
     - target: {fileID: 5381097829292937686, guid: eaaad87c836b2264c815670573f43025, type: 3}

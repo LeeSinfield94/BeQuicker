@@ -49,7 +49,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (PlayerController.LocalPlayerInstance == null)
         {
             int currentNumberOfPlayers = PhotonNetwork.PlayerList.Length - 1;
-            Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
             // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
             GameObject go = PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPoints[currentNumberOfPlayers].position, Quaternion.identity, 0);
         }
