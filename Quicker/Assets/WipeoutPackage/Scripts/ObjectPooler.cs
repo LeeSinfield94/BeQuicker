@@ -48,7 +48,7 @@ public class ObjectPooler : MonoBehaviour
             }
         }
 
-        GameObject.FindObjectOfType<PlayerData>().CallUpdateTrapObjects();
+        GameObject.FindObjectOfType<PlayerController>().CallUpdateTrapObjects();
     }
 
     public void GetAllSpawnedObjects()

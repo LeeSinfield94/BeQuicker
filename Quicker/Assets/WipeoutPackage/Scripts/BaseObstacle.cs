@@ -4,11 +4,11 @@ using UnityEngine;
 
 public abstract class BaseObstacle : MonoBehaviour
 {
-    protected virtual void DoEffect(PlayerData player)
+    protected virtual void DoEffect(PlayerController player)
     {
         print("Do Effect");
     }
-    protected virtual void UndoEffect(PlayerData player)
+    protected virtual void UndoEffect(PlayerController player)
     {
         print("Undo Effect");
     }
@@ -16,7 +16,7 @@ public abstract class BaseObstacle : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            DoEffect(other.GetComponent<PlayerData>());
+            DoEffect(other.GetComponent<PlayerController>());
         }
     }
 
@@ -24,7 +24,7 @@ public abstract class BaseObstacle : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            UndoEffect(other.GetComponent<PlayerData>());
+            UndoEffect(other.GetComponent<PlayerController>());
         }
     }
 }

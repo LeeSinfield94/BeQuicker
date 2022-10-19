@@ -8,7 +8,7 @@ using UnityEngine;
 public class NetworkedEvents : MonoBehaviourPunCallbacks, IOnEventCallback
 {
     public static NetworkedEvents instance;
-    public PlayerData localPlayer;
+    public PlayerController localPlayer;
 
     private void Awake()
     {

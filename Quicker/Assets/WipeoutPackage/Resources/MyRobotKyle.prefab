@@ -685,10 +685,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  strafeSpeed: 12
+  strafeSpeed: 0
   playerAnimator: {fileID: 4146775068623485882}
   playerHUD: {fileID: 1502183134654046641}
-  normalSpeed: 6
+  normalSpeed: 4
   myFloor: {fileID: 0}
   isReady: 0
   startPos: {x: 0, y: 0, z: 0}
