@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     private bool isSlowed;
     private int currentLane = 1;
     private int laneToPlaceTrap = 1;
-    private int otherPlayerCurrentLane;
+    private int otherPlayerCurrentLane = 1;
 
     public bool isReady;
     public Vector3 startPos;
