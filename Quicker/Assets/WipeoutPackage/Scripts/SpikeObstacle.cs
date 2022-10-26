@@ -6,7 +6,7 @@ public class SpikeObstacle : BaseObstacle
 {
     public Vector3 yOffset;
 
-    protected override void DoEffect(PlayerData player)
+    protected override void DoEffect(PlayerController player)
     {
         if(player != null)
         {
@@ -14,7 +14,7 @@ public class SpikeObstacle : BaseObstacle
         }
     }
 
-    protected override void UndoEffect(PlayerData player)
+    protected override void UndoEffect(PlayerController player)
     {
         if (player != null)
         {

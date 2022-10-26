@@ -18,7 +18,7 @@ public class SpawnPoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        PlayerData player = other.transform.gameObject.GetComponent<PlayerData>();
+        PlayerController player = other.transform.gameObject.GetComponent<PlayerController>();
         if (player)
         {
             player.MyFloor = GetComponentInParent<PlayerFloor>();

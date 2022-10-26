@@ -44,6 +44,7 @@ MonoBehaviour:
   - FindSpawnPoint
   - SpawnSpikeForOthers
   - UpdateTrapObjects
+  - SetOtherPlayer
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
