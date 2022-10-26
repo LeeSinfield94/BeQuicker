@@ -11,7 +11,7 @@ public class PlayerFloor : MonoBehaviour
         get { return lanes; }
     }
 
-    public void SpawnObstacleOnFloor(ObstacleType type, int laneIndex, PlayerData player)
+    public void SpawnObstacleOnFloor(ObstacleType type, int laneIndex, PlayerController player)
     {
         Vector3 yOffset;
         GameObject go = ObjectPooler.instance.GetObject(type, this, out yOffset);

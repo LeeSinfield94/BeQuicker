@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private static Dictionary<PlayerData, float> playerTime = new Dictionary<PlayerData, float>();
+    [SerializeField] private static Dictionary<PlayerController, float> playerTime = new Dictionary<PlayerController, float>();
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject floorPrefab;
     [SerializeField] private List<Transform> spawnPoints = new List<Transform>();
@@ -46,10 +46,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         allPlayersReady = false;
-        if (PlayerData.LocalPlayerInstance == null)
+        if (PlayerController.LocalPlayerInstance == null)
         {
             int currentNumberOfPlayers = PhotonNetwork.PlayerList.Length - 1;
-            Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManagerHelper.ActiveSceneName);
             // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
             GameObject go = PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPoints[currentNumberOfPlayers].position, Quaternion.identity, 0);
         }
@@ -91,7 +90,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             playersReady.Remove(playerTagObject);
         }
     }
-    public static void SetPlayerTime(PlayerData player)
+    public static void SetPlayerTime(PlayerController player)
     {
         if(!playerTime.ContainsKey(player))
         {
@@ -130,7 +129,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         RaceTimer.StartTimer = true;
     }
 
-    public static float GetPlayersCurrentTime(PlayerData player)
+    public static float GetPlayersCurrentTime(PlayerController player)
     {
         float time;
         playerTime.TryGetValue(player, out time);

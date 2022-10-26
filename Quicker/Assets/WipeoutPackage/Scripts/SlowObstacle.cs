@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SlowObstacle : BaseObstacle
 {
-    protected override void DoEffect(PlayerData player)
+    protected override void DoEffect(PlayerController player)
     {
         print("SlowEffect");
         if (player != null)
@@ -13,7 +13,7 @@ public class SlowObstacle : BaseObstacle
         }
     }
 
-    protected override void UndoEffect(PlayerData player)
+    protected override void UndoEffect(PlayerController player)
     {
         if (player != null)
         {
