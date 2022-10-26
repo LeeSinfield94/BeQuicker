@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UIColourSwtcher : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
+public class UIColourSwitcher : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
 {
     public Toggle toggle;
     public Image backgroundImage;
@@ -15,10 +15,11 @@ public class UIColourSwtcher : MonoBehaviour, IPointerClickHandler, IPointerEnte
     public Color disabledColor;
     public bool isOn;
     public bool mouseOver = false;
+    public bool playerIsNotInLane = true;
     public void Update()
     {
         isOn = toggle.isOn;
-        if(!mouseOver && !isOn)
+        if(!mouseOver && !isOn && playerIsNotInLane)
         {
             backgroundImage.color = normalColor;
         }

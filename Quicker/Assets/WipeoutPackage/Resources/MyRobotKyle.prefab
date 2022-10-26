@@ -684,14 +684,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8192c40e5f2493d4e98ee97d8a53a745, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
   strafeSpeed: 0
   playerAnimator: {fileID: 4146775068623485882}
   playerHUD: {fileID: 1502183134654046641}
   normalSpeed: 4
+  toggleHandler: {fileID: 7026526608992877006}
+  currentLane: 1
   isReady: 0
   startPos: {x: 0, y: 0, z: 0}
-  myFloor: {fileID: 0}
+  _myFloor: {fileID: 0}
+  _speed: 0
 --- !u!114 &4146775068623485882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1996,3 +1998,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5381097830427455386, guid: eaaad87c836b2264c815670573f43025, type: 3}
   m_PrefabInstance: {fileID: 6806535997281783318}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7026526608992877006 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4609030510096316376, guid: eaaad87c836b2264c815670573f43025, type: 3}
+  m_PrefabInstance: {fileID: 6806535997281783318}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02c207ccb229e7146a827f83984289fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

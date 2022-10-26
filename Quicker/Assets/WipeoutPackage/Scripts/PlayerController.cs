@@ -10,10 +10,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] PlayerAnimatorManager playerAnimator;
     [SerializeField] GameObject playerHUD;
     [SerializeField] float normalSpeed = 4;
+    [SerializeField] ToggleHandler toggleHandler;
 
     float slowSpeed = 3f;
     bool isSlowed;
-    int currentLane = 1;
+    public int currentLane = 1;
     int laneToPlaceTrap = 1;
     int otherPlayerCurrentLane = 1;
 
@@ -132,9 +133,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public void SetOtherPlayerCurrentLane(int otherCurrentLane)
     {
         otherPlayerCurrentLane = otherCurrentLane;
+        if(toggleHandler != null)
+        {
+            toggleHandler.SetToggleColour(otherPlayerCurrentLane);
+        }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         bool keyPressed = Input.GetKey(KeyCode.None);
         if (!keyPressed)
@@ -142,18 +147,18 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             if (Input.GetKeyDown(KeyCode.A))
             {
                 LeftPressed();
-                Movement(canMoveForward);
             }
             if (Input.GetKeyDown(KeyCode.D))
             {
                 RightPressed();
-                Movement(canMoveForward);
             }
         }
+
 
         if (GameManager.AllPlayersReady)
         {
             SetSpeed();
+            Movement(canMoveForward);
         }
         else
         {
@@ -165,11 +170,19 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     private void RightPressed()
     {
         currentLane++;
+        if (currentLane >= _myFloor.Lanes.Count - 1)
+        {
+            currentLane = _myFloor.Lanes.Count - 1;
+        }
     }
 
     private void LeftPressed()
     {
-        currentLane--;
+        currentLane--; 
+        if (currentLane <= 0)
+        {
+            currentLane = 0;
+        }
     }
 
 
@@ -179,7 +192,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
         if (canMoveForward)
         {
-            movement += Vector3.forward * _speed * Time.fixedDeltaTime;
+            movement += Vector3.forward * _speed * Time.deltaTime;
         }
         movement.x = _myFloor.Lanes[currentLane].position.x;
         transform.position = movement;
@@ -242,18 +255,15 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         else
         {
             // Network player, receive data
-            this.isSlowed = (bool)stream.ReceiveNext();
-            this.isReady = (bool)stream.ReceiveNext();
-            this.currentLane = (int)stream.ReceiveNext();
+            isSlowed = (bool)stream.ReceiveNext();
+            isReady = (bool)stream.ReceiveNext();
+            currentLane = (int)stream.ReceiveNext();
             
-            print($"This ready up status = {isReady}");
-            GameManager.SetPlayerReadyStatus(photonView.Controller.UserId, this.isReady);
+            GameManager.SetPlayerReadyStatus(photonView.Controller.UserId, isReady);
 
             if(_myFloor != null)
             {
-                Vector3 movement = transform.position;
-                movement.x = _myFloor.Lanes[currentLane].position.x;
-                this.transform.position = movement;
+                Movement(canMoveForward);
             }
             GameObject localPlayer = PhotonNetwork.LocalPlayer.TagObject as GameObject;
             if (localPlayer != null)
