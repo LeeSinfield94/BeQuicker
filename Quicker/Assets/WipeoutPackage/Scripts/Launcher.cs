@@ -13,16 +13,21 @@ namespace Launcher
 
         [Tooltip("The maximum number of players per room. When a room is full, it can't be joined by new players, and so new room will be created")]
         [SerializeField]
-        private byte maxPlayersPerRoom = 1;
+        byte maxPlayersPerRoom = 2;
         [Tooltip("The Ui Panel to let the user enter name, connect and play")]
         [SerializeField]
-        private GameObject controlPanel;
+        GameObject controlPanel;
         [Tooltip("The UI Label to inform the user that the connection is in progress")]
         [SerializeField]
-        private GameObject progressLabel;
+        GameObject progressLabel;
+        [SerializeField]
+        GameObject hostGameOptionsPanel;
 
-        bool isConnecting;
-        bool isHosting = false;
+        bool _isConnecting;
+        bool _isHosting = false;
+
+        string _roomName = "";
+
         void Awake()
         {
             PhotonNetwork.AutomaticallySyncScene = true;
@@ -35,23 +40,33 @@ namespace Launcher
 
         public void HostGame()
         {
-            isHosting = true;
-            progressLabel.SetActive(true);
             controlPanel.SetActive(false);
+            hostGameOptionsPanel.SetActive(true);
+        }
+
+        public void SetRoomName(string roomName)
+        {
+            _roomName = roomName;
+        }
+
+        public void StartHostGame()
+        {
+            _isHosting = true;
+
             if (PhotonNetwork.IsConnected)
             {
-                PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom, PublishUserId = true });
+                PhotonNetwork.CreateRoom(_roomName, new RoomOptions { MaxPlayers = maxPlayersPerRoom, PublishUserId = true });
             }
             else
             {
-                isConnecting = PhotonNetwork.ConnectUsingSettings();
+                _isConnecting = PhotonNetwork.ConnectUsingSettings();
                 PhotonNetwork.GameVersion = gameVersion;
             }
         }
 
         public void JoinGame()
         {
-            isHosting = false;
+            _isHosting = false;
             progressLabel.SetActive(true);
             controlPanel.SetActive(false);
             if (PhotonNetwork.IsConnected)
@@ -60,7 +75,7 @@ namespace Launcher
             }
             else
             {
-                isConnecting = PhotonNetwork.ConnectUsingSettings();
+                _isConnecting = PhotonNetwork.ConnectUsingSettings();
                 PhotonNetwork.GameVersion = gameVersion;
             }
         }
@@ -68,17 +83,17 @@ namespace Launcher
         public override void OnConnectedToMaster()
         {
             Debug.Log("OnConnectedToMaster() was called by PUN");
-            if (isConnecting)
+            if (_isConnecting)
             {
-                if(isHosting)
+                if(_isHosting)
                 {
-                    PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom, PublishUserId = true });
+                    PhotonNetwork.CreateRoom(_roomName, new RoomOptions { MaxPlayers = maxPlayersPerRoom, PublishUserId = true });
                 }
                 else
                 {
                     PhotonNetwork.JoinRandomRoom();
                 }
-                isConnecting = false;
+                _isConnecting = false;
             }
         }
 
@@ -93,6 +108,10 @@ namespace Launcher
         public override void OnJoinRandomFailed(short returnCode, string message)
         {
             Debug.LogWarningFormat("OnDisconnected() was called by PUN with reason {0}", message);
+            if(_roomName != "")
+            {
+                PhotonNetwork.CreateRoom(_roomName, new RoomOptions { MaxPlayers = maxPlayersPerRoom, PublishUserId = true });
+            }
             PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom, PublishUserId = true });
         }
         public override void OnJoinedRoom()

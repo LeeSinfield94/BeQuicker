@@ -421,6 +421,7 @@ MonoBehaviour:
   maxPlayersPerRoom: 4
   controlPanel: {fileID: 218033866}
   progressLabel: {fileID: 155903739}
+  hostGameOptionsPanel: {fileID: 0}
 --- !u!4 &1006516543
 Transform:
   m_ObjectHideFlags: 0
@@ -442,6 +443,42 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 829900503193761885, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1006516542}
+    - target: {fileID: 829900503193761885, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 829900503193761885, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartHostGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 829900503193761885, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1006516542}
+    - target: {fileID: 829900503193761885, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetRoomName
+      objectReference: {fileID: 0}
+    - target: {fileID: 829900503193761885, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Launcher.Launcher, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 829900503193761885, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Launcher.Launcher, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 829900503193761885, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 829900503193761885, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1177083280095556630, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
@@ -483,6 +520,10 @@ PrefabInstance:
       value: 'Enter Your Name...
 
 '
+      objectReference: {fileID: 0}
+    - target: {fileID: 2391089474584918014, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3499213090246724198, guid: 91997c96c91ad3f4dbd2bc6701735997, type: 3}
       propertyPath: m_AnchorMax.x
