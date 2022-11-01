@@ -22,9 +22,12 @@ namespace Launcher
         GameObject progressLabel;
         [SerializeField]
         GameObject hostGameOptionsPanel;
+        [SerializeField]
+        GameObject joinGameOptionsPanel;
 
         bool _isConnecting;
         bool _isHosting = false;
+        bool _joiningRandomRoom = true;
 
         string _roomName = "";
 
@@ -42,6 +45,11 @@ namespace Launcher
         {
             controlPanel.SetActive(false);
             hostGameOptionsPanel.SetActive(true);
+        }
+        public void JoinGame()
+        {
+            controlPanel.SetActive(false);
+            joinGameOptionsPanel.SetActive(true);
         }
 
         public void SetRoomName(string roomName)
@@ -64,20 +72,19 @@ namespace Launcher
             }
         }
 
-        public void JoinGame()
+        public void JoinGame(bool joiningRandomRoom)
         {
             _isHosting = false;
+            _joiningRandomRoom = joiningRandomRoom;
             progressLabel.SetActive(true);
             controlPanel.SetActive(false);
-            if (PhotonNetwork.IsConnected)
+            if(PhotonNetwork.IsConnected)
             {
-                PhotonNetwork.JoinRandomRoom();
+                PhotonNetwork.Disconnect();
             }
-            else
-            {
-                _isConnecting = PhotonNetwork.ConnectUsingSettings();
-                PhotonNetwork.GameVersion = gameVersion;
-            }
+            _isConnecting = PhotonNetwork.ConnectUsingSettings();
+            PhotonNetwork.GameVersion = gameVersion;
+
         }
 
         public override void OnConnectedToMaster()
@@ -89,9 +96,13 @@ namespace Launcher
                 {
                     PhotonNetwork.CreateRoom(_roomName, new RoomOptions { MaxPlayers = maxPlayersPerRoom, PublishUserId = true });
                 }
-                else
+                else if(_joiningRandomRoom)
                 {
                     PhotonNetwork.JoinRandomRoom();
+                }
+                else
+                {
+                    PhotonNetwork.JoinRoom(_roomName);
                 }
                 _isConnecting = false;
             }
@@ -100,19 +111,20 @@ namespace Launcher
 
         public override void OnDisconnected(DisconnectCause cause)
         {
-            progressLabel.SetActive(false);
-            controlPanel.SetActive(true);
             Debug.LogWarningFormat("OnDisconnected() was called by PUN with reason {0}", cause);
         }
 
         public override void OnJoinRandomFailed(short returnCode, string message)
         {
             Debug.LogWarningFormat("OnDisconnected() was called by PUN with reason {0}", message);
-            if(_roomName != "")
-            {
-                PhotonNetwork.CreateRoom(_roomName, new RoomOptions { MaxPlayers = maxPlayersPerRoom, PublishUserId = true });
-            }
             PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom, PublishUserId = true });
+        }
+        public override void OnJoinRoomFailed(short returnCode, string message)
+        {
+            print(message);
+            joinGameOptionsPanel.SetActive(false);
+            progressLabel.SetActive(false);
+            controlPanel.SetActive(true);
         }
         public override void OnJoinedRoom()
         {

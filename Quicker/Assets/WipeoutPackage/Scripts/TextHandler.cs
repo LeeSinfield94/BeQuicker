@@ -9,6 +9,10 @@ public class TextHandler : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI textMeshPro;
 
+    private void Start()
+    {
+        textMeshPro.text = PhotonNetwork.CurrentRoom.Name;
+    }
     public void SetText(string newText)
     {
         textMeshPro.text = newText;
