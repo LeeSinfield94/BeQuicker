@@ -16,6 +16,7 @@ public class UIColourSwitcher : MonoBehaviour, IPointerClickHandler, IPointerEnt
     public bool isOn;
     public bool mouseOver = false;
     public bool playerIsNotInLane = true;
+
     public void Update()
     {
         isOn = toggle.isOn;
