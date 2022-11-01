@@ -5,17 +5,17 @@ using UnityEngine.UI;
 
 public class ToggleHandler : MonoBehaviour
 {
-    [SerializeField] private List<UIColourSwitcher> toggles = new List<UIColourSwitcher>();
+    [SerializeField] List<UIColourSwitcher> _toggles = new List<UIColourSwitcher>();
 
     public void SetToggleColour(int otherPlayersCurrentLane)
     {
-        for(int i = 0; i < toggles.Count; i++)
+        for(int i = 0; i < _toggles.Count; i++)
         {
-            toggles[i].playerIsNotInLane = true;
-            toggles[i].backgroundImage.color = toggles[i].normalColor;
+            _toggles[i].PlayerIsNotInLane = true;
+            _toggles[i].BackgroundImage.color = _toggles[i].NormalColor;
         }
-        toggles[otherPlayersCurrentLane].playerIsNotInLane = false;
-        toggles[otherPlayersCurrentLane].backgroundImage.color = Color.red;
+        _toggles[otherPlayersCurrentLane].PlayerIsNotInLane = false;
+        _toggles[otherPlayersCurrentLane].BackgroundImage.color = Color.red;
     }
 
 }

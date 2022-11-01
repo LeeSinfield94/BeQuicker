@@ -18,7 +18,7 @@ namespace MyGame.UI
     public class PlayerNameInputField : MonoBehaviour
     {
         // Store the PlayerPref Key to avoid typos
-        const string playerNamePrefKey = "PlayerName";
+        const string PlayerNamePrefKey = "PlayerName";
 
         void Start()
         {
@@ -26,9 +26,9 @@ namespace MyGame.UI
             TMP_InputField inputField = this.GetComponent<TMP_InputField>();
             if (inputField != null)
             {
-                if (PlayerPrefs.HasKey(playerNamePrefKey))
+                if (PlayerPrefs.HasKey(PlayerNamePrefKey))
                 {
-                    defaultName = PlayerPrefs.GetString(playerNamePrefKey);
+                    defaultName = PlayerPrefs.GetString(PlayerNamePrefKey);
                     inputField.text = defaultName;
                 }
             }
@@ -45,7 +45,7 @@ namespace MyGame.UI
             PhotonNetwork.NickName = value;
 
 
-            PlayerPrefs.SetString(playerNamePrefKey, value);
+            PlayerPrefs.SetString(PlayerNamePrefKey, value);
         }
 
     }

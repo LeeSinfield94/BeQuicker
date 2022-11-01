@@ -7,9 +7,9 @@ public class SpawnPoint : MonoBehaviour
 {
     public SpawnPoint()
     {
-        canSpawn = true;
+        CanSpawn = true;
     }
-    public bool canSpawn
+    public bool CanSpawn
     {
         get;
         set;

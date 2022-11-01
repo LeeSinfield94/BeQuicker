@@ -7,14 +7,14 @@ using UnityEngine;
 
 public class TextHandler : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI textMeshPro;
+    [SerializeField] TextMeshProUGUI _textMeshPro;
 
     private void Start()
     {
-        textMeshPro.text = PhotonNetwork.CurrentRoom.Name;
+        _textMeshPro.text = PhotonNetwork.CurrentRoom.Name;
     }
     public void SetText(string newText)
     {
-        textMeshPro.text = newText;
+        _textMeshPro.text = newText;
     }
 }

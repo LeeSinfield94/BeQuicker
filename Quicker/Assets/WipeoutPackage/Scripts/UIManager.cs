@@ -5,29 +5,29 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private TMP_Text timerText;
+    [SerializeField] TMP_Text _timerText;
 
-    private static UIManager instance;
+    static UIManager _instance;
     public static UIManager Instance
     {
-        get { return instance; }
+        get { return _instance; }
     }
     // Start is called before the first frame update
     void Start()
     {
-        if(instance != this)
+        if(_instance != this)
         {
-            Destroy(instance);
-            instance = this;
+            Destroy(_instance);
+            _instance = this;
         }
         else
         {
-            instance = this;
+            _instance = this;
         }
     }
 
     public void SetTimeText(float time)
     {
-        timerText.text = time.ToString();
+        _timerText.text = time.ToString();
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpikeObstacle : BaseObstacle
 {
-    public Vector3 yOffset;
+    public Vector3 YOffset;
 
     protected override void DoEffect(PlayerController player)
     {

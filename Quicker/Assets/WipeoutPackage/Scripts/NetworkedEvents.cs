@@ -7,19 +7,19 @@ using UnityEngine;
 
 public class NetworkedEvents : MonoBehaviourPunCallbacks, IOnEventCallback
 {
-    public static NetworkedEvents instance;
-    public PlayerController localPlayer;
+    public static NetworkedEvents Instance;
+    public PlayerController LocalPlayer;
 
     private void Awake()
     {
-        if(instance != null)
+        if(Instance != null)
         {
-            Destroy(instance.gameObject);
-            instance = this;
+            Destroy(Instance.gameObject);
+            Instance = this;
         }
         else
         {
-            instance = this;
+            Instance = this;
         }
     }
 
@@ -39,7 +39,7 @@ public class NetworkedEvents : MonoBehaviourPunCallbacks, IOnEventCallback
         int lane = (int)data[0];
         if(photonEvent.Sender != PhotonNetwork.LocalPlayer.ActorNumber)
         {
-            localPlayer.SpawnSpike(ObstacleType.SPIKE, lane);
+            LocalPlayer.SpawnSpike(ObstacleType.SPIKE, lane);
         }
     }
 

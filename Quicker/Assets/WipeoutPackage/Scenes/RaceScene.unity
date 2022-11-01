@@ -392,9 +392,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e10b7a9c7fbf6b94a9bba6d06cb93b4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 1660451163778682779, guid: a140689e6b5e44d46bdcf85043cfb002, type: 3}
-  floorPrefab: {fileID: 8463210509993400216, guid: fafa8b8f2fcb04c4dac0b13f26a6e4ae, type: 3}
-  spawnPoints:
+  _playerPrefab: {fileID: 1660451163778682779, guid: a140689e6b5e44d46bdcf85043cfb002, type: 3}
+  _spawnPoints:
   - {fileID: 852880223}
   - {fileID: 684769355}
 --- !u!4 &765403849
@@ -423,10 +422,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 528cf1c436e7e1c48a69068b164f9ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectsToSpawn:
-  - amountToSpawn: 10
-    objectToSpawn: {fileID: 8821130895318198200, guid: 9adae4f7a93bd1d4cb9f3689057f8414, type: 3}
-  spikeObjects: []
+  _objectsToSpawn:
+  - AmountToSpawn: 10
+    ObjectToSpawn: {fileID: 8821130895318198200, guid: 9adae4f7a93bd1d4cb9f3689057f8414, type: 3}
+  SpikeObjects: []
 --- !u!114 &765403851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -439,7 +438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f66efc9362a4db14d9b12b2f8dc872e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localPlayer: {fileID: 0}
+  LocalPlayer: {fileID: 0}
 --- !u!4 &852880223 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6007085003085765364, guid: fafa8b8f2fcb04c4dac0b13f26a6e4ae, type: 3}
@@ -541,7 +540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6f49322e62b5574096a83ee1d7c004e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 0, y: 4, z: -4}
+  _offset: {x: 0, y: 4, z: -4}
 --- !u!1001 &1130473987
 PrefabInstance:
   m_ObjectHideFlags: 0

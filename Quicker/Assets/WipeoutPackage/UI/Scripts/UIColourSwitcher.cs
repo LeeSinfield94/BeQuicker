@@ -6,40 +6,40 @@ using UnityEngine.UI;
 
 public class UIColourSwitcher : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
 {
-    public Toggle toggle;
-    public Image backgroundImage;
-    public Color normalColor;
-    public Color highlightedColor;
-    public Color pressedColor;
-    public Color selectedColor;
-    public Color disabledColor;
-    public bool isOn;
-    public bool mouseOver = false;
-    public bool playerIsNotInLane = true;
+    public Toggle Toggle;
+    public Image BackgroundImage;
+    public Color NormalColor;
+    public Color HighlightedColor;
+    public Color PressedColor;
+    public Color SelectedColor;
+    public Color DisabledColor;
+    public bool IsOn;
+    public bool MouseOver = false;
+    public bool PlayerIsNotInLane = true;
 
     public void Update()
     {
-        isOn = toggle.isOn;
-        if(!mouseOver && !isOn && playerIsNotInLane)
+        IsOn = Toggle.isOn;
+        if(!MouseOver && !IsOn && PlayerIsNotInLane)
         {
-            backgroundImage.color = normalColor;
+            BackgroundImage.color = NormalColor;
         }
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(backgroundImage != null)
+        if(BackgroundImage != null)
         {
-            backgroundImage.color = pressedColor;
+            BackgroundImage.color = PressedColor;
         }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        mouseOver = true;
-        if(!isOn && backgroundImage != null)
+        MouseOver = true;
+        if(!IsOn && BackgroundImage != null)
         {
-            backgroundImage.color = highlightedColor;
+            BackgroundImage.color = HighlightedColor;
         }
         else
         {
@@ -49,10 +49,10 @@ public class UIColourSwitcher : MonoBehaviour, IPointerClickHandler, IPointerEnt
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        mouseOver = false;
-        if (!isOn && backgroundImage != null)
+        MouseOver = false;
+        if (!IsOn && BackgroundImage != null)
         {
-            backgroundImage.color = normalColor;
+            BackgroundImage.color = NormalColor;
         }
         else
         {
@@ -62,9 +62,9 @@ public class UIColourSwitcher : MonoBehaviour, IPointerClickHandler, IPointerEnt
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if(!isOn && backgroundImage != null)
+        if(!IsOn && BackgroundImage != null)
         {
-            backgroundImage.color = normalColor;
+            BackgroundImage.color = NormalColor;
         }
         else
         {

@@ -6,26 +6,27 @@ using System.Collections;
 using UnityEngine;
 public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 {
-    [SerializeField] float strafeSpeed;
-    [SerializeField] PlayerAnimatorManager playerAnimator;
-    [SerializeField] GameObject playerHUD;
-    [SerializeField] float normalSpeed = 4;
-    [SerializeField] ToggleHandler toggleHandler;
+    [SerializeField] float _strafeSpeed;
+    [SerializeField] PlayerAnimatorManager _playerAnimator;
+    [SerializeField] GameObject _playerHUD;
+    [SerializeField] float _normalSpeed = 4;
+    [SerializeField] ToggleHandler _toggleHandler;
 
-    float slowSpeed = 3f;
-    bool isSlowed;
-    public int currentLane = 1;
-    int laneToPlaceTrap = 1;
-    int otherPlayerCurrentLane = 1;
+    float _slowSpeed = 3f;
+    bool _isSlowed;
+    public int _currentLane = 1;
+    int _laneToPlaceTrap = 1;
+    int _otherPlayerCurrentLane = 1;
 
-    public bool isReady;
-    public Vector3 startPos;
+    public bool IsReady;
+    public Vector3 StartPos;
 
-    private bool canMoveForward = true;
+    bool _canMoveForward = true;
     public bool CanMoveForward
     {
-        set { canMoveForward = value; }
+        set { _canMoveForward = value; }
     }
+
     [SerializeField]
     PlayerFloor _myFloor;
     public PlayerFloor MyFloor
@@ -61,52 +62,52 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     private void OnEnable()
     {
-        GameManager.Instance.restartLevel += RestartPlayer;
+        GameManager.Instance.LevelRestarting += RestartPlayer;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.restartLevel -= RestartPlayer;
+        GameManager.Instance.LevelRestarting -= RestartPlayer;
     }
 
     private void Start()
     {
         if (photonView.IsMine && PhotonNetwork.IsConnected)
         {
-            CameraFollow.instance.Init(this.transform);
-            NetworkedEvents.instance.localPlayer = this;
-            startPos = transform.position;
+            CameraFollow.Instance.Init(this.transform);
+            NetworkedEvents.Instance.LocalPlayer = this;
+            StartPos = transform.position;
             RestartPlayer();
         }
         if(!photonView.IsMine)
         {
-            playerHUD.SetActive(false);
+            _playerHUD.SetActive(false);
         }
     }
 
     public void SetSlowed(bool isSlow)
     {
-        isSlowed = isSlow;
+        _isSlowed = isSlow;
         SetSpeed();
     }
 
     public void SetSpeed()
     {
-        _speed = isSlowed ? slowSpeed : normalSpeed;
+        _speed = _isSlowed ? _slowSpeed : _normalSpeed;
         SetAnimationSpeed();
     }
     public void SetReadyUpStatus(bool readyStatus)
     {
-        isReady = readyStatus;
-        GameManager.SetPlayerReadyStatus(photonView.Controller.UserId, isReady);
+        IsReady = readyStatus;
+        GameManager.SetPlayerReadyStatus(photonView.Controller.UserId, IsReady);
     }
 
     public void RestartPlayer()
     {
-        transform.position = startPos;
-        isReady = false;
-        playerHUD.GetComponentInChildren<TextHandler>().SetText("Not Ready");
-        GameManager.SetPlayerReadyStatus(photonView.Controller.UserId, this.isReady);
+        transform.position = StartPos;
+        IsReady = false;
+        _playerHUD.GetComponentInChildren<TextHandler>().SetText("Not Ready");
+        GameManager.SetPlayerReadyStatus(photonView.Controller.UserId, this.IsReady);
     }
 
     public void CallUpdateTrapObjects()
@@ -117,25 +118,25 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void UpdateTrapObjects()
     {
-        ObjectPooler.instance.GetAllSpawnedObjects();
+        ObjectPooler.Instance.GetAllSpawnedObjects();
     }
 
     public int GetOtherPlayersCurrentLane()
     {
-        return otherPlayerCurrentLane;
+        return _otherPlayerCurrentLane;
     }
 
     public void SetCurrentLane(int lane)
     {
-        laneToPlaceTrap = lane;
+        _laneToPlaceTrap = lane;
     }
     
     public void SetOtherPlayerCurrentLane(int otherCurrentLane)
     {
-        otherPlayerCurrentLane = otherCurrentLane;
-        if(toggleHandler != null)
+        _otherPlayerCurrentLane = otherCurrentLane;
+        if(_toggleHandler != null)
         {
-            toggleHandler.SetToggleColour(otherPlayerCurrentLane);
+            _toggleHandler.SetToggleColour(_otherPlayerCurrentLane);
         }
     }
 
@@ -158,7 +159,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         if (GameManager.AllPlayersReady)
         {
             SetSpeed();
-            Movement(canMoveForward);
+            Movement(_canMoveForward);
         }
         else
         {
@@ -169,19 +170,19 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     private void RightPressed()
     {
-        currentLane++;
-        if (currentLane >= _myFloor.Lanes.Count - 1)
+        _currentLane++;
+        if (_currentLane >= _myFloor.Lanes.Count - 1)
         {
-            currentLane = _myFloor.Lanes.Count - 1;
+            _currentLane = _myFloor.Lanes.Count - 1;
         }
     }
 
     private void LeftPressed()
     {
-        currentLane--; 
-        if (currentLane <= 0)
+        _currentLane--; 
+        if (_currentLane <= 0)
         {
-            currentLane = 0;
+            _currentLane = 0;
         }
     }
 
@@ -194,15 +195,15 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         {
             movement += Vector3.forward * _speed * Time.deltaTime;
         }
-        movement.x = _myFloor.Lanes[currentLane].position.x;
+        movement.x = _myFloor.Lanes[_currentLane].position.x;
         transform.position = movement;
     }
 
     public void SetAnimationSpeed()
     {
-        if (playerAnimator != null)
+        if (_playerAnimator != null)
         {
-            playerAnimator.SetAnimationSpeed(_speed);
+            _playerAnimator.SetAnimationSpeed(_speed);
         }
     }
 
@@ -210,9 +211,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     {
         if(TrapTimer.CanPlaceTrap)
         {
-            object[] content = new object[] { laneToPlaceTrap };
+            object[] content = new object[] { _laneToPlaceTrap };
             RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-            PhotonNetwork.RaiseEvent(NetworkEventCodes.spawnSpikeEvent, content, raiseEventOptions, SendOptions.SendReliable);
+            PhotonNetwork.RaiseEvent(NetworkEventCodes.SpawnSpikeEvent, content, raiseEventOptions, SendOptions.SendReliable);
             StartCoroutine(TrapTimer.WaitForTimer());
         }
 
@@ -248,27 +249,27 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         if (stream.IsWriting)
         {
             // We own this player: send the others our data
-            stream.SendNext(isSlowed);
-            stream.SendNext(isReady);
-            stream.SendNext(currentLane);
+            stream.SendNext(_isSlowed);
+            stream.SendNext(IsReady);
+            stream.SendNext(_currentLane);
         }
         else
         {
             // Network player, receive data
-            isSlowed = (bool)stream.ReceiveNext();
-            isReady = (bool)stream.ReceiveNext();
-            currentLane = (int)stream.ReceiveNext();
+            _isSlowed = (bool)stream.ReceiveNext();
+            IsReady = (bool)stream.ReceiveNext();
+            _currentLane = (int)stream.ReceiveNext();
             
-            GameManager.SetPlayerReadyStatus(photonView.Controller.UserId, isReady);
+            GameManager.SetPlayerReadyStatus(photonView.Controller.UserId, IsReady);
 
             if(_myFloor != null)
             {
-                Movement(canMoveForward);
+                Movement(_canMoveForward);
             }
             GameObject localPlayer = PhotonNetwork.LocalPlayer.TagObject as GameObject;
             if (localPlayer != null)
             {
-                localPlayer.GetComponent<PlayerController>().SetOtherPlayerCurrentLane(currentLane);
+                localPlayer.GetComponent<PlayerController>().SetOtherPlayerCurrentLane(_currentLane);
             }
             else
             {
