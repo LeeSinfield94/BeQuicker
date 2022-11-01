@@ -684,14 +684,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8192c40e5f2493d4e98ee97d8a53a745, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strafeSpeed: 0
-  playerAnimator: {fileID: 4146775068623485882}
-  playerHUD: {fileID: 1502183134654046641}
-  normalSpeed: 4
-  toggleHandler: {fileID: 7026526608992877006}
-  currentLane: 1
-  isReady: 0
-  startPos: {x: 0, y: 0, z: 0}
+  _strafeSpeed: 0
+  _playerAnimator: {fileID: 4146775068623485882}
+  _playerHUD: {fileID: 1502183134654046641}
+  _normalSpeed: 4
+  _toggleHandler: {fileID: 7026526608992877006}
+  _currentLane: 1
+  IsReady: 0
+  StartPos: {x: 0, y: 0, z: 0}
   _myFloor: {fileID: 0}
   _speed: 0
 --- !u!114 &4146775068623485882

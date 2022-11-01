@@ -4,29 +4,33 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private Vector3 offset;
+    [SerializeField] Vector3 _offset;
 
 
-    private Transform targetToFollow;
+    Transform _targetToFollow;
 
-    public static CameraFollow instance;
+    static CameraFollow _instance;
+    public static CameraFollow Instance
+    {
+        get { return _instance; }
+    }
 
     private void Awake()
     {
-        instance = this;
+        _instance = this;
     }
     // Start is called before the first frame update
     public void Init(Transform followTarget)
     {
-        targetToFollow = followTarget;
+        _targetToFollow = followTarget;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(targetToFollow != null)
+        if(_targetToFollow != null)
         {
-            transform.position = targetToFollow.position + offset;
+            transform.position = _targetToFollow.position + _offset;
         }
     }
 }

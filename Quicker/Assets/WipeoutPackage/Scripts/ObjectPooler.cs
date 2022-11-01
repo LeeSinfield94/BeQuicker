@@ -9,19 +9,18 @@ using UnityEngine;
 [System.Serializable]
 public struct ObjectsToSpawn
 {
-    public int amountToSpawn;
-    public GameObject objectToSpawn;
-    //public Transform parent;
+    public int AmountToSpawn;
+    public GameObject ObjectToSpawn;
 }
 public class ObjectPooler : MonoBehaviour
 {
-    [SerializeField] private List<ObjectsToSpawn> objectsToSpawn = new List<ObjectsToSpawn>();
+    [SerializeField] List<ObjectsToSpawn> _objectsToSpawn = new List<ObjectsToSpawn>();
 
-    public List<GameObject> spikeObjects = new List<GameObject>();
-    public static ObjectPooler instance;
+    public List<GameObject> SpikeObjects = new List<GameObject>();
+    public static ObjectPooler Instance;
     private void Awake()
     {
-        instance = this;
+        Instance = this;
     }
     public void Start()
     {
@@ -33,16 +32,16 @@ public class ObjectPooler : MonoBehaviour
     }
     public void AddToList(GameObject go)
     {
-        spikeObjects.Add(go);
+        SpikeObjects.Add(go);
     }
 
     public void SpawnTraps()
     {
-        foreach (ObjectsToSpawn objectToSpawn in objectsToSpawn)
+        foreach (ObjectsToSpawn objectToSpawn in _objectsToSpawn)
         {
-            for (int i = 0; i < objectToSpawn.amountToSpawn; i++)
+            for (int i = 0; i < objectToSpawn.AmountToSpawn; i++)
             {
-                GameObject go = PhotonNetwork.Instantiate(objectToSpawn.objectToSpawn.name, Vector3.zero, Quaternion.identity);
+                GameObject go = PhotonNetwork.Instantiate(objectToSpawn.ObjectToSpawn.name, Vector3.zero, Quaternion.identity);
                 AddToList(go);
                 go.SetActive(false);
             }
@@ -66,7 +65,7 @@ public class ObjectPooler : MonoBehaviour
         switch (type)
         {
             case ObstacleType.SPIKE:
-                yOffset = GetSpikeObject(floor).GetComponent<SpikeObstacle>().yOffset;
+                yOffset = GetSpikeObject(floor).GetComponent<SpikeObstacle>().YOffset;
                 return GetSpikeObject(floor);
         }
         yOffset = Vector3.zero;
@@ -75,11 +74,11 @@ public class ObjectPooler : MonoBehaviour
 
     public GameObject GetSpikeObject(PlayerFloor floor)
     {
-        for (int i = 0; i < spikeObjects.Count; i++)
+        for (int i = 0; i < SpikeObjects.Count; i++)
         {
-            if (!spikeObjects[i].activeInHierarchy)
+            if (!SpikeObjects[i].activeInHierarchy)
             {
-                return spikeObjects[i];
+                return SpikeObjects[i];
             }
         }
         return null;

@@ -8,11 +8,11 @@ namespace MyGame.Gameplay
     [RequireComponent(typeof(Animator))]
     public class PlayerAnimatorManager : MonoBehaviourPun
     {
-        private Animator animator;
+        Animator _animator;
 
         private void Start()
         {
-            animator = GetComponent<Animator>();
+            _animator = GetComponent<Animator>();
         }
 
         public void SetAnimationSpeed(float speed)
@@ -21,8 +21,8 @@ namespace MyGame.Gameplay
             {
                 return;
             }
-            if(animator)
-                animator.SetFloat("Speed", speed);
+            if(_animator)
+                _animator.SetFloat("Speed", speed);
         }
     } 
 }

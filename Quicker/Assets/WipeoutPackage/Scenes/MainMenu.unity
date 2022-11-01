@@ -423,11 +423,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d6b45c245877ea428ef9b3cb623e2c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxPlayersPerRoom: 4
-  controlPanel: {fileID: 218033866}
-  progressLabel: {fileID: 155903739}
-  hostGameOptionsPanel: {fileID: 1841144049}
-  joinGameOptionsPanel: {fileID: 865997294}
+  _maxPlayersPerRoom: 2
+  _controlPanel: {fileID: 218033866}
+  _progressLabel: {fileID: 155903739}
+  _hostGameOptionsPanel: {fileID: 1841144049}
+  _joinGameOptionsPanel: {fileID: 865997294}
 --- !u!4 &1006516543
 Transform:
   m_ObjectHideFlags: 0

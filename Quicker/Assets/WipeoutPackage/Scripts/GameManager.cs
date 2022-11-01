@@ -8,49 +8,47 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private static Dictionary<PlayerController, float> playerTime = new Dictionary<PlayerController, float>();
-    [SerializeField] private GameObject playerPrefab;
-    [SerializeField] private GameObject floorPrefab;
-    [SerializeField] private List<Transform> spawnPoints = new List<Transform>();
+    [SerializeField] static Dictionary<PlayerController, float> _playerTime = new Dictionary<PlayerController, float>();
+    [SerializeField] GameObject _playerPrefab;
+    [SerializeField] List<Transform> _spawnPoints = new List<Transform>();
 
-    private static bool allPlayersReady = false;
+    private static bool _allPlayersReady = false;
     public static bool AllPlayersReady
     {
-        get { return allPlayersReady; }
-        set { allPlayersReady = value; }
+        get { return _allPlayersReady; }
     }
 
     public delegate void RestartLevel();
-    public event RestartLevel restartLevel;
+    public event RestartLevel LevelRestarting;
 
     //list of players and their ready status.   
     public static Dictionary<object, bool> playersReady = new Dictionary<object, bool>();
-    private static GameManager instance;
+    private static GameManager _instance;
     public static GameManager Instance
     {
-        get { return instance; }
+        get { return _instance; }
     }
 
     private void Awake()
     {
-        if (instance != null)
+        if (_instance != null)
         {
-            Destroy(instance.gameObject);
-            instance = this;
+            Destroy(_instance.gameObject);
+            _instance = this;
         }
         else
         {
-            instance = this;
+            _instance = this;
         }
     }
     private void Start()
     {
-        allPlayersReady = false;
+        _allPlayersReady = false;
         if (PlayerController.LocalPlayerInstance == null)
         {
             int currentNumberOfPlayers = PhotonNetwork.PlayerList.Length - 1;
             // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-            GameObject go = PhotonNetwork.Instantiate(this.playerPrefab.name, spawnPoints[currentNumberOfPlayers].position, Quaternion.identity, 0);
+            GameObject go = PhotonNetwork.Instantiate(_playerPrefab.name, _spawnPoints[currentNumberOfPlayers].position, Quaternion.identity, 0);
         }
         else
         {
@@ -60,7 +58,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        restartLevel.Invoke();
+        LevelRestarting.Invoke();
         SceneManager.LoadScene(0);
     }
 
@@ -92,9 +90,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public static void SetPlayerTime(PlayerController player)
     {
-        if(!playerTime.ContainsKey(player))
+        if(!_playerTime.ContainsKey(player))
         {
-            playerTime.Add(player, RaceTimer.GetCurrentTime());
+            _playerTime.Add(player, RaceTimer.GetCurrentTime());
         }
     }
 
@@ -116,11 +114,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             if(player.Value == false)
             {
-               allPlayersReady = false;
+               _allPlayersReady = false;
                return;
             }
         }
-        allPlayersReady = true;
+        _allPlayersReady = true;
         StartTimer();
     }
 
@@ -132,7 +130,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public static float GetPlayersCurrentTime(PlayerController player)
     {
         float time;
-        playerTime.TryGetValue(player, out time);
+        _playerTime.TryGetValue(player, out time);
         return time;
     }
 
@@ -142,8 +140,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             RemovePlayerToList(otherPlayer.UserId);
         }
-        restartLevel.Invoke();
-        allPlayersReady = false;
+        LevelRestarting.Invoke();
+        _allPlayersReady = false;
         print("Player Left Room");
     }
 

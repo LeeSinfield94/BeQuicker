@@ -65,7 +65,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02c207ccb229e7146a827f83984289fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggles:
+  _toggles:
   - {fileID: 5878022668263855364}
   - {fileID: 3022340818281785172}
   - {fileID: 5519076627897256764}
@@ -452,7 +452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea95b90dd4a26604eb1268b9ed110bc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textMeshPro: {fileID: 2148877515080106318}
+  _textMeshPro: {fileID: 2148877515080106318}
 --- !u!1 &6795820897500994410
 GameObject:
   m_ObjectHideFlags: 0
