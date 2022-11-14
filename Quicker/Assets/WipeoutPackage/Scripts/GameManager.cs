@@ -8,26 +8,34 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+    #region SerializedFields
     [SerializeField] static Dictionary<PlayerController, float> _playerTime = new Dictionary<PlayerController, float>();
     [SerializeField] GameObject _playerPrefab;
-    [SerializeField] List<Transform> _spawnPoints = new List<Transform>();
+    [SerializeField] List<Transform> _spawnPoints = new List<Transform>(); 
+    #endregion
 
+    #region Events
+    public delegate void RestartLevel();
+    public event RestartLevel LevelRestarting;
+    public delegate void PlayerDied();
+    public event PlayerDied OnPlayerDied; 
+    #endregion
+
+    //list of players and their ready status.   
+    public static Dictionary<object, bool> playersReady = new Dictionary<object, bool>();
+
+    #region Properties
     private static bool _allPlayersReady = false;
     public static bool AllPlayersReady
     {
         get { return _allPlayersReady; }
     }
-
-    public delegate void RestartLevel();
-    public event RestartLevel LevelRestarting;
-
-    //list of players and their ready status.   
-    public static Dictionary<object, bool> playersReady = new Dictionary<object, bool>();
     private static GameManager _instance;
     public static GameManager Instance
     {
         get { return _instance; }
-    }
+    } 
+    #endregion
 
     private void Awake()
     {

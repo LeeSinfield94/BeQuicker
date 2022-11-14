@@ -692,6 +692,7 @@ MonoBehaviour:
   _currentLane: 1
   IsReady: 0
   StartPos: {x: 0, y: 0, z: 0}
+  _playerHealth: 5
   _myFloor: {fileID: 0}
   _speed: 0
 --- !u!114 &4146775068623485882

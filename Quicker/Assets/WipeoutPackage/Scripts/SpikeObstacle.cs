@@ -10,17 +10,7 @@ public class SpikeObstacle : BaseObstacle
     {
         if(player != null)
         {
-            player.CanMoveForward = false;
+            player.ModifyHealth(false, 5f);
         }
     }
-
-    protected override void UndoEffect(PlayerController player)
-    {
-        if (player != null)
-        {
-            player.CanMoveForward = true;
-        }
-    }
-
-
 }

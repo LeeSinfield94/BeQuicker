@@ -6,21 +6,36 @@ using System.Collections;
 using UnityEngine;
 public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 {
+    #region SerializeFields
+
     [SerializeField] float _strafeSpeed;
     [SerializeField] PlayerAnimatorManager _playerAnimator;
     [SerializeField] GameObject _playerHUD;
     [SerializeField] float _normalSpeed = 4;
-    [SerializeField] ToggleHandler _toggleHandler;
+    [SerializeField] ToggleHandler _toggleHandler; 
+    #endregion
 
+    #region Private Variables
     float _slowSpeed = 3f;
     bool _isSlowed;
     public int _currentLane = 1;
     int _laneToPlaceTrap = 1;
     int _otherPlayerCurrentLane = 1;
+    #endregion
+
+    #region Public Variables
 
     public bool IsReady;
     public Vector3 StartPos;
+    #endregion
 
+    #region Properties
+    [SerializeField]
+    float _playerHealth = 5;
+    public float PlayerHealth
+    {
+        get { return _playerHealth; }
+    }
     bool _canMoveForward = true;
     public bool CanMoveForward
     {
@@ -33,7 +48,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     {
         set { _myFloor = value; }
         get { return _myFloor; }
-    }
+    } 
+    #endregion
 
 
     [SerializeField] float _speed;
@@ -63,11 +79,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     private void OnEnable()
     {
         GameManager.Instance.LevelRestarting += RestartPlayer;
+        GameManager.Instance.OnPlayerDied += PlayerDied;
     }
 
     private void OnDisable()
     {
         GameManager.Instance.LevelRestarting -= RestartPlayer;
+        GameManager.Instance.OnPlayerDied -= PlayerDied;
     }
 
     private void Start()
@@ -85,6 +103,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+    #region Speed
     public void SetSlowed(bool isSlow)
     {
         _isSlowed = isSlow;
@@ -95,7 +114,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     {
         _speed = _isSlowed ? _slowSpeed : _normalSpeed;
         SetAnimationSpeed();
-    }
+    } 
+    #endregion
+
     public void SetReadyUpStatus(bool readyStatus)
     {
         IsReady = readyStatus;
@@ -168,6 +189,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         SetAnimationSpeed();
     }
 
+    #region Movement
     private void RightPressed()
     {
         _currentLane++;
@@ -179,7 +201,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     private void LeftPressed()
     {
-        _currentLane--; 
+        _currentLane--;
         if (_currentLane <= 0)
         {
             _currentLane = 0;
@@ -198,7 +220,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         movement.x = _myFloor.Lanes[_currentLane].position.x;
         transform.position = movement;
     }
-
     public void SetAnimationSpeed()
     {
         if (_playerAnimator != null)
@@ -206,10 +227,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             _playerAnimator.SetAnimationSpeed(_speed);
         }
     }
+    #endregion
 
+
+    #region SpikeEvent
     public void RaiseSpikeEvent()
     {
-        if(TrapTimer.CanPlaceTrap)
+        if (TrapTimer.CanPlaceTrap)
         {
             object[] content = new object[] { _laneToPlaceTrap };
             RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
@@ -229,7 +253,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public void SpawnSpikeForOthers(ObstacleType type, int lane)
     {
         CallSpawnObstacleOnFloor(type, lane);
-    }
+    } 
+    #endregion
 
     private void CallSpawnObstacleOnFloor(ObstacleType type, int lane)
     {
@@ -244,6 +269,20 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         GameManager.SetPlayerTime(this);
     }
 
+    public void ModifyHealth(bool positive, float amount)
+    {
+        _playerHealth = positive ? _playerHealth + amount : _playerHealth - amount;
+        if(IsDead())
+        {
+            PlayerDied();
+        }
+    }
+
+
+    public bool IsDead()
+    {
+        return _playerHealth <= 0;
+    }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
@@ -271,11 +310,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             {
                 localPlayer.GetComponent<PlayerController>().SetOtherPlayerCurrentLane(_currentLane);
             }
-            else
-            {
-                print("SHIIIIIT");
-            }
         }
+
+    }
+    public void PlayerDied()
+    {
+        GameManager.Instance.LeaveRoom();
     }
 
 }
