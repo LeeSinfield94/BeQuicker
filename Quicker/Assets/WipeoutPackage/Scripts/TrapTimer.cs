@@ -10,7 +10,7 @@ public static class TrapTimer
         get { return _canPlaceTrap; }
     }
 
-    private static float _timer = 3;
+    private static float _timer = 5;
 
     
     public static IEnumerator WaitForTimer()
