@@ -10,7 +10,7 @@ public class SpikeObstacle : BaseObstacle
     {
         if(player != null)
         {
-            player.ModifyHealth(false, 5f);
+            player.ModifyHealth(false, 1);
         }
     }
 }

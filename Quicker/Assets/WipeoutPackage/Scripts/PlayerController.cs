@@ -3,7 +3,10 @@ using MyGame.Gameplay;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 {
     #region SerializeFields
@@ -13,6 +16,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] GameObject _playerHUD;
     [SerializeField] float _normalSpeed = 4;
     [SerializeField] ToggleHandler _toggleHandler; 
+    [SerializeField] PlayerHealthIconHandler _playerHealthIconHandler; 
     #endregion
 
     #region Private Variables
@@ -31,7 +35,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     #region Properties
     [SerializeField]
-    float _playerHealth = 5;
+    int _playerHealth = 5;
     public float PlayerHealth
     {
         get { return _playerHealth; }
@@ -269,9 +273,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         GameManager.SetPlayerTime(this);
     }
 
-    public void ModifyHealth(bool positive, float amount)
+    public void ModifyHealth(bool positive, int amount)
     {
         _playerHealth = positive ? _playerHealth + amount : _playerHealth - amount;
+        if(_playerHealthIconHandler != null)
+        {
+            _playerHealthIconHandler.UpdateHealthIcons(_playerHealth, Color.white);
+        }
         if(IsDead())
         {
             PlayerDied();

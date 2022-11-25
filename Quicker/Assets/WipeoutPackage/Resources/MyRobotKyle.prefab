@@ -689,6 +689,7 @@ MonoBehaviour:
   _playerHUD: {fileID: 1502183134654046641}
   _normalSpeed: 4
   _toggleHandler: {fileID: 7026526608992877006}
+  _playerHealthIconHandler: {fileID: 2424506098162088205}
   _currentLane: 1
   IsReady: 0
   StartPos: {x: 0, y: 0, z: 0}
@@ -2008,5 +2009,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02c207ccb229e7146a827f83984289fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2424506098162088205 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9209930636798457627, guid: eaaad87c836b2264c815670573f43025, type: 3}
+  m_PrefabInstance: {fileID: 6806535997281783318}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 301a8d8e8738ad34eb45f887dcbf6e8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
